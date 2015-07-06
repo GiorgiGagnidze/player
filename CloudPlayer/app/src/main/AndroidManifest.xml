@@ -26,10 +26,10 @@
             android:name=".ui.PlayerActivity">
         </activity>
         <activity
-            android:name=".ui.PlayListActivity">
+            android:name=".ui.ProfileActivity">
         </activity>
         <activity
-            android:name=".ui.ProfileActivity">
+            android:name=".ui.PlayListActivity">
         </activity>
     </application>
 

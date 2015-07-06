@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(activity, PlayListActivity.class);
+                Intent intent = new Intent(activity, ProfileActivity.class);
                 intent.putExtra(activity.getResources().getString(R.string.key_playlistID),i);
                 startActivity(intent);
             }
