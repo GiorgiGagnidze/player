@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/activity_comments_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_comments_linear">
+    </ListView>
+
+
+    <LinearLayout
+        android:id="@+id/activity_comments_linear"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/activity_comments_edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write new comment"
+            android:textSize="25sp"/>
+
+        <Button
+            android:id="@+id/activity_comments_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="comment"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
