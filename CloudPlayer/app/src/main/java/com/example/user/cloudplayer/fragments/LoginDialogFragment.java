@@ -55,6 +55,12 @@ public class LoginDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 String email = editText.getText().toString();
+                String password = username.getText().toString();
+                if (password.equals("")){
+                    Toast.makeText(activity, activity.getResources().getString(R.string.user_name_alert),
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (email.equals("")){
                     Toast.makeText(activity, activity.getResources().getString(R.string.email_alert),
                             Toast.LENGTH_LONG).show();
@@ -65,7 +71,7 @@ public class LoginDialogFragment extends DialogFragment {
                     for (Account account : accounts) {
                         if (emailPattern.matcher(account.name).matches() &&
                                 email.equals(account.name)){
-                            handleEmail(email,d,activity,"");
+                            handleEmail(email,d,activity,password);
                             break;
                         }
                         counter++;
@@ -83,7 +89,7 @@ public class LoginDialogFragment extends DialogFragment {
             password){
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
-            public void done(ParseUser parseUser, com.parse.ParseException e) {
+            public void done(final ParseUser parseUser, com.parse.ParseException e) {
                 final SharedPreferences prefs = activity.getSharedPreferences(
                         getResources().getString(R.string.key_app), Context.MODE_PRIVATE);
                 if (parseUser != null) {
@@ -95,6 +101,7 @@ public class LoginDialogFragment extends DialogFragment {
                     ParseUser user = new ParseUser();
                     user.setUsername(email);
                     user.setPassword(password);
+                    user.put(getResources().getString(R.string.name_col),password);
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {

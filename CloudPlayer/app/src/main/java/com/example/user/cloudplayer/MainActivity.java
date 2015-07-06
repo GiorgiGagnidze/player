@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.storage.CloudStorage;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 import com.example.user.cloudplayer.ui.PlayListActivity;
+import com.example.user.cloudplayer.ui.ProfileActivity;
 
 import java.util.ArrayList;
 
@@ -38,10 +40,20 @@ public class MainActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null)
             login();
+        app = (App)getApplication();
+        final Activity activity = this;
         app.addListener(this);
         listView = (ListView)findViewById(R.id.play_lists_list_view);
         editText = (EditText)findViewById(R.id.search);
         textView = (TextView)findViewById(R.id.description);
+        Button profile = (Button)findViewById(R.id.profile);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         cloudStorage = App.getCloudStorage();
         if (savedInstanceState == null)
             cloudStorage.getTopTen();
@@ -62,7 +74,6 @@ public class MainActivity extends Activity implements NetworkEventListener {
             public void afterTextChanged(Editable editable) {
             }
         });
-        final Activity activity = this;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
