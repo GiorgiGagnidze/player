@@ -4,5 +4,6 @@
     <string name="app_name">CloudPlayer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="application_id">8T1LRQfWKAThdzeRAC65yXnCSe3UzdYD1A5SqFc0</string>
+    <string name="client_key">kJ6hI1o0utplVUsQMAHgSId7RC50dGEeakSeaXLm</string>
 </resources>

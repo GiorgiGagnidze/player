@@ -33,8 +33,8 @@ public class App extends Application implements NetworkEventListener {
         listeners = new HashSet<>();
         cloudStorage = new CloudStorage();
         cloudStorage.setListener(this);
-//        Parse.initialize(this, getResources().getString(R.string.application_id),
-//                getResources().getString(R.string.client_key));
+        Parse.initialize(this, getResources().getString(R.string.application_id),
+                getResources().getString(R.string.client_key));
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(true);
         ParseACL.setDefaultACL(acl,true);
