@@ -18,4 +18,10 @@
     <string name="key_email">email</string>
     <string name="key_username">iuzgar</string>
     <string name="login_alert">Email or username is incorrect!</string>
+    <string name="search_hint">search</string>
+    <string name="profile_text">Profile</string>
+    <string name="tag">tag</string>
+    <string name="key_playlistID">playID</string>
+    <string name="key_search">search</string>
+
 </resources>

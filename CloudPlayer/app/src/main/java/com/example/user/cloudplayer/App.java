@@ -11,7 +11,11 @@ import java.util.HashSet;
 
 public class App extends Application implements NetworkEventListener {
     private HashSet<NetworkEventListener> listeners;
-    private CloudStorage cloudStorage;
+    private static CloudStorage cloudStorage;
+
+    public static CloudStorage getCloudStorage(){
+        return cloudStorage;
+    }
 
     public void addListener(NetworkEventListener networkEventListener) {
         if (!listeners.contains(networkEventListener))

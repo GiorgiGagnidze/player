@@ -16,4 +16,12 @@ public class CloudStorage {
     public void setResources(Resources resources) {
         this.resources = resources;
     }
+
+    public void getSearchResult(String keyword){
+
+    }
+
+    public void getTopTen(){
+
+    }
 }
