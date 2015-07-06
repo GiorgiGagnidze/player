@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.user.cloudplayer.R;
-import com.example.user.cloudplayer.adapters.PlaylistActivityAdapter;
+import com.example.user.cloudplayer.adapters.ProfileActivityAdapter;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ProfileActivity extends Activity implements NetworkEventListener{
 
     private ListView list;
-    private PlaylistActivityAdapter adapter;
+    private ProfileActivityAdapter adapter;
     private Button addButton;
     private Button deleteButton;
     private EditText edit;
@@ -29,19 +29,19 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlists);
+        setContentView(R.layout.activity_profile);
 
-        addButton = (Button)findViewById(R.id.activity_playlists_button_add);
-        deleteButton = (Button)findViewById(R.id.activity_playlists_button_delete);
-        edit = (EditText)findViewById(R.id.activity_playlists_edit_text);
+        addButton = (Button)findViewById(R.id.activity_profile_button_add);
+        deleteButton = (Button)findViewById(R.id.activity_profile_button_delete);
+        edit = (EditText)findViewById(R.id.activity_profile_edit_text);
 
-        list = (ListView)findViewById(R.id.activity_playlists_list_view);
+        list = (ListView)findViewById(R.id.activity_profile_list_view);
         ArrayList<PlayList> playLists = new ArrayList<PlayList>();
         currentPlayLists = playLists;
         for(int i = 0; i < 50; i++){
             playLists.add(new PlayList("droebiti saxeliii",null,null,i));
         }
-        adapter = new PlaylistActivityAdapter(this,playLists);
+        adapter = new ProfileActivityAdapter(this,playLists);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

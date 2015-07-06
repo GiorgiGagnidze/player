@@ -12,12 +12,12 @@ import com.example.user.cloudplayer.model.PlayList;
 
 import java.util.ArrayList;
 
-public class PlaylistActivityAdapter extends BaseAdapter{
+public class ProfileActivityAdapter extends BaseAdapter{
 
     private Activity context;
     private ArrayList<PlayList> playLists;
 
-    public PlaylistActivityAdapter(Activity context,ArrayList<PlayList> playLists){
+    public ProfileActivityAdapter(Activity context, ArrayList<PlayList> playLists){
         this.context = context;
         this.playLists = playLists;
     }
@@ -40,10 +40,10 @@ public class PlaylistActivityAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){ // inflates only when it is necessary.it is correct style of writing such as code.
-            view = View.inflate(context, R.layout.activity_playlists_list_view_item,null);
+            view = View.inflate(context, R.layout.activity_profile_list_view_item,null);
         }
 
-        TextView userName = (TextView)view.findViewById(R.id.activity_playlists_name);
+        TextView userName = (TextView)view.findViewById(R.id.activity_profile_name);
 
         view.setMinimumHeight(125);
 

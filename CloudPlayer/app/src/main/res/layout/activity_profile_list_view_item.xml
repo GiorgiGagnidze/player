@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/activity_playlists_name"
+        android:id="@+id/activity_profile_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="playlistia bidzachemooo"

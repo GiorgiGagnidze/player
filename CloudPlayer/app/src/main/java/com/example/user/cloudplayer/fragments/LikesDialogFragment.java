@@ -2,14 +2,11 @@ package com.example.user.cloudplayer.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.widget.ListView;
 
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.adapters.LikesDialogAdapter;
-import com.example.user.cloudplayer.adapters.PlaylistActivityAdapter;
 import com.example.user.cloudplayer.model.Like;
 
 import java.util.ArrayList;

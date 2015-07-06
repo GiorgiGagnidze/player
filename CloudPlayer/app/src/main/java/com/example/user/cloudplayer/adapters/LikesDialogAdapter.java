@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.model.Like;
-import com.example.user.cloudplayer.model.PlayList;
 
 import java.util.ArrayList;
 
@@ -41,10 +40,10 @@ public class LikesDialogAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){ // inflates only when it is necessary.it is correct style of writing such as code.
-            view = View.inflate(context, R.layout.activity_playlists_list_view_item,null);
+            view = View.inflate(context, R.layout.activity_profile_list_view_item,null);
         }
 
-        TextView userName = (TextView)view.findViewById(R.id.activity_playlists_name);
+        TextView userName = (TextView)view.findViewById(R.id.activity_profile_name);
 
         view.setMinimumHeight(125);
 
