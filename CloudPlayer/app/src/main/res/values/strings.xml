@@ -28,5 +28,7 @@
     <string name="numlikes_col">numlikes</string>
     <string name="user_name_alert">Please, enter username!</string>
     <string name="key_user">user</string>
-
+    <string name="comment_table">comment</string>
+    <string name="text_col">text</string>
+    <string name="playlistID_col">plaiListID</string>
 </resources>

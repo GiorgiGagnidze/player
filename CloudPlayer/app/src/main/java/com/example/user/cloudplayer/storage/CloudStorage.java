@@ -7,7 +7,9 @@ import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -42,10 +44,13 @@ public class CloudStorage {
                                         object.getString(resources.getString(R.string.name_col)),
                                         object.getInt(resources.getString(R.string.numlikes_col)));
                         playList.setID(object.getObjectId());
+                        playList.setUserID(object.getParseUser(resources.getString(R.string.key_user)).
+                                getObjectId());
                         playLists.add(playList);
                     }
-                    //listeneris gamodzaxeba aq da else shi
-                }
+                    listener.onSearchResultDownloaded(playLists);
+                } else
+                    listener.onSearchResultDownloaded(null);
             }
         });
     }
@@ -65,10 +70,14 @@ public class CloudStorage {
                                 object.getString(resources.getString(R.string.name_col)),
                                 object.getInt(resources.getString(R.string.numlikes_col)));
                         playList.setID(object.getObjectId());
+                        playList.setUserID(object.getParseUser(resources.getString(R.string.key_user)).
+                                getObjectId());
                         playLists.add(playList);
+
                     }
-                    //listeneris gamodzaxeba aq da else shi
-                }
+                    listener.onTopTenDownloaded(playLists);
+                } else
+                    listener.onTopTenDownloaded(null);
             }
         });
     }
@@ -83,18 +92,59 @@ public class CloudStorage {
             public void done(ParseException e) {
                 if (e == null){
                     playList.setID(object.getObjectId());
-                    // listeneris aq da elseshi
-                }
+                    playList.setUserID(ParseUser.getCurrentUser().getObjectId());
+                    listener.onPlayListAdded(playList);
+                }else
+                    listener.onPlayListAdded(null);
             }
         });
     }
 
-    public void deletePlayList(PlayList playList){
-
+    public void deletePlayList(final PlayList playList){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
+                R.string.play_table));
+        query.getInBackground(playList.getID(),new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null){
+                    parseObject.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null)
+                                listener.onPlayListDeleted(playList);
+                            else
+                                listener.onPlayListDeleted(null);
+                        }
+                    });
+                } else
+                    listener.onPlayListDeleted(null);
+            }
+        });
     }
 
     public void downloadUsersPlaylists(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
+        query.whereEqualTo(resources.getString(R.string.key_user),ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null){
+                    ArrayList<PlayList> playLists = new ArrayList<PlayList>();
+                    for (ParseObject object: parseObjects){
+                        PlayList playList =new PlayList(
+                                object.getString(resources.getString(R.string.name_col)),
+                                object.getInt(resources.getString(R.string.numlikes_col)));
+                        playList.setID(object.getObjectId());
+                        playList.setUserID(object.getParseUser(resources.getString(R.string.key_user)).
+                                getObjectId());
+                        playLists.add(playList);
 
+                    }
+                    listener.onUsersPlayListsDownloaded(playLists);
+                } else
+                    listener.onUsersPlayListsDownloaded(null);
+            }
+        });
     }
 
     public void getComments(String playlistID){
@@ -106,7 +156,18 @@ public class CloudStorage {
     }
 
     public void addComment(Comment comment){
-
+//        final ParseObject object = new ParseObject(resources.getString(R.string.comment_table));
+//        object.put(resources.getString(R.string.name_col),comment.getUserName());
+//        object.put(resources.getString(R.string.playlistID_col),comment.getNumLikes());
+//        object.put(resources.getString(R.string.text_col), comment.getText());
+//        object.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null){
+//
+//                }
+//            }
+//        });
     }
 
     public void getSongs(String playListID){
