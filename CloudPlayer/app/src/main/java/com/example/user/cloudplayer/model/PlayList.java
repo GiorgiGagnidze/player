@@ -7,6 +7,7 @@ public class PlayList {
     private String ID;
     private ArrayList<Song> songs;
     private int numLikes;
+    private String userID;
 
 
     public PlayList(String name ,int numLikes){
@@ -37,5 +38,13 @@ public class PlayList {
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }

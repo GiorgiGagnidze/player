@@ -4,6 +4,7 @@ package com.example.user.cloudplayer.storage;
 import android.content.res.Resources;
 
 import com.example.user.cloudplayer.R;
+import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 import com.parse.FindCallback;
@@ -86,5 +87,33 @@ public class CloudStorage {
                 }
             }
         });
+    }
+
+    public void deletePlayList(PlayList playList){
+
+    }
+
+    public void downloadUsersPlaylists(){
+
+    }
+
+    public void getComments(String playlistID){
+
+    }
+
+    public void getLikes(String playlistID){
+
+    }
+
+    public void addComment(Comment comment){
+
+    }
+
+    public void getSongs(String playListID){
+
+    }
+
+    public void addSong(String path,String playlistID){
+
     }
 }
