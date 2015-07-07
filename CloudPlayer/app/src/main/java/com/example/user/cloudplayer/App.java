@@ -52,51 +52,61 @@ public class App extends Application implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onPlayListAdded(playList);
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onPlayListDeleted(playList);
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onUsersPlayListsDownloaded(playLists);
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onCommentsDownloaded(comments);
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onLikesDownloaded(likes);
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onCommentAdded(comment);
     }
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onSearchResultDownloaded(playLists);
     }
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onTopTenDownloaded(playLists);
     }
 
     @Override
     public void onSongAdded(Song song) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onSongAdded(song);
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
+        for (NetworkEventListener listener: listeners)
+            listener.onSongsDownloaded(songs);
     }
 }
