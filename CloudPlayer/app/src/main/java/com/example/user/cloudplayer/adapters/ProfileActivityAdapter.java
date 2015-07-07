@@ -22,6 +22,12 @@ public class ProfileActivityAdapter extends BaseAdapter{
         this.playLists = playLists;
     }
 
+
+    public void updateListView(ArrayList<PlayList> playLists){
+        this.playLists = playLists;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return playLists.size();
@@ -42,11 +48,9 @@ public class ProfileActivityAdapter extends BaseAdapter{
         if(view == null){ // inflates only when it is necessary.it is correct style of writing such as code.
             view = View.inflate(context, R.layout.activity_profile_list_view_item,null);
         }
-
-        TextView userName = (TextView)view.findViewById(R.id.activity_profile_name);
-
+        TextView playListName = (TextView)view.findViewById(R.id.activity_profile_name);
+        playListName.setText(playLists.get(i).getName());
         view.setMinimumHeight(125);
-
         return view;
     }
 }

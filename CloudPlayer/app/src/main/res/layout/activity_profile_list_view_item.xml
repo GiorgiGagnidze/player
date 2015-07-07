@@ -7,7 +7,6 @@
         android:id="@+id/activity_profile_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="playlistia bidzachemooo"
         android:textStyle="bold"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"/>

@@ -23,6 +23,11 @@ public class CommentsActivityAdapter extends BaseAdapter {
         this.comments = comments;
     }
 
+    public void updateListView(ArrayList<Comment> comments){
+        this.comments = comments;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return comments.size();
@@ -44,9 +49,13 @@ public class CommentsActivityAdapter extends BaseAdapter {
             view = View.inflate(context, R.layout.activity_comments_list_view_item,null);
         }
 
-        TextView userName = (TextView)view.findViewById(R.id.activity_comments_user_name);
+        Comment currentComment = comments.get(i);
 
+        TextView userName = (TextView)view.findViewById(R.id.activity_comments_user_name);
         TextView comment = (TextView)view.findViewById(R.id.activity_comments_text);
+
+        userName.setText(currentComment.getUserName() + ":");
+        comment.setText(currentComment.getText());
 
         view.setMinimumHeight(125);
 

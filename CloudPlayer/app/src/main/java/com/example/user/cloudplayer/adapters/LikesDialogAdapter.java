@@ -44,7 +44,7 @@ public class LikesDialogAdapter extends BaseAdapter {
         }
 
         TextView userName = (TextView)view.findViewById(R.id.activity_profile_name);
-
+        userName.setText(likes.get(i).getUserName());
         view.setMinimumHeight(125);
 
         return view;
