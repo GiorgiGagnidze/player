@@ -31,4 +31,8 @@
     <string name="comment_table">comment</string>
     <string name="text_col">text</string>
     <string name="playlistID_col">plaiListID</string>
+    <string name="parent_col">parent</string>
+    <string name="like_table">like</string>
+    <string name="song_table">like</string>
+    <string name="file_col">data</string>
 </resources>

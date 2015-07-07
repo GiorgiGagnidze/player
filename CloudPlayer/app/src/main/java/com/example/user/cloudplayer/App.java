@@ -52,7 +52,7 @@ public class App extends Application implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        
+
     }
 
     @Override
