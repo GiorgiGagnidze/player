@@ -64,7 +64,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 //App.onLikeButtonClicked();
             }
         });
-        currentPlayList=new ArrayList<>();
+        currentPlayList=new ArrayList<Song>();
         for(int i=0;i<20;i++){
             currentPlayList.add(new Song());
         }

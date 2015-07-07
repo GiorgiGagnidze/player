@@ -34,7 +34,7 @@ public class App extends Application implements NetworkEventListener {
     }
 
     private void initApp() {
-        listeners = new HashSet<>();
+        listeners = new HashSet<NetworkEventListener>();
         cloudStorage = new CloudStorage();
         cloudStorage.setListener(this);
         Parse.initialize(this, getResources().getString(R.string.application_id),

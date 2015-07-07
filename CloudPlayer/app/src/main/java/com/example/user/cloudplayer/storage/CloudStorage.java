@@ -34,7 +34,7 @@ public class CloudStorage {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null){
-                    ArrayList<PlayList> playLists = new ArrayList<>();
+                    ArrayList<PlayList> playLists = new ArrayList<PlayList>();
                     for (ParseObject object: parseObjects){
                         PlayList playList =new PlayList(
                                         object.getString(resources.getString(R.string.name_col)),
@@ -57,7 +57,7 @@ public class CloudStorage {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null){
-                    ArrayList<PlayList> playLists = new ArrayList<>();
+                    ArrayList<PlayList> playLists = new ArrayList<PlayList>();
                     for (ParseObject object: parseObjects){
                         PlayList playList =new PlayList(
                                 object.getString(resources.getString(R.string.name_col)),
