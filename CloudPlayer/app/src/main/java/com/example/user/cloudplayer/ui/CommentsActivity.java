@@ -36,7 +36,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        
+
     }
 
     @Override
