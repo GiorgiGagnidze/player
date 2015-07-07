@@ -39,7 +39,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         ArrayList<PlayList> playLists = new ArrayList<PlayList>();
         currentPlayLists = playLists;
         for(int i = 0; i < 50; i++){
-            playLists.add(new PlayList("droebiti saxeliii",null,null,i));
+            playLists.add(new PlayList("droebiti saxeliii",i));
         }
         adapter = new ProfileActivityAdapter(this,playLists);
         list.setAdapter(adapter);

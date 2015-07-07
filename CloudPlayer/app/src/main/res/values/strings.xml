@@ -24,5 +24,6 @@
     <string name="key_playlistID">playID</string>
     <string name="key_search">search</string>
     <string name="name_col">name</string>
-    <string name="user_name_alert">Please, enter username!</string>
+    <string name="play_table">playlist</string>
+    <string name="numlikes_col">numlikes</string>
 </resources>

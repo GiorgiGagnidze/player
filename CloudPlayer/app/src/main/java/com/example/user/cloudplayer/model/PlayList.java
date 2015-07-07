@@ -9,10 +9,8 @@ public class PlayList {
     private int numLikes;
 
 
-    public PlayList(String name,String ID,ArrayList<Song> songs,int numLikes){
+    public PlayList(String name ,int numLikes){
         this.name = name;
-        this.ID = ID;
-        this.songs = songs;
         this.numLikes = numLikes;
     }
 
@@ -33,6 +31,11 @@ public class PlayList {
         return numLikes;
     }
 
+    public void setSongs(ArrayList<Song> songs) {
+        this.songs = songs;
+    }
 
-
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 }
