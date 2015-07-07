@@ -27,4 +27,6 @@
     <string name="play_table">playlist</string>
     <string name="numlikes_col">numlikes</string>
     <string name="user_name_alert">Please, enter username!</string>
+    <string name="key_user">user</string>
+
 </resources>
