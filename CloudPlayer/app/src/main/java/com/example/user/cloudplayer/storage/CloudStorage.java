@@ -10,6 +10,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class CloudStorage {
         final ParseObject object = new ParseObject(resources.getString(R.string.play_table));
         object.put(resources.getString(R.string.name_col),playList.getName());
         object.put(resources.getString(R.string.numlikes_col),playList.getNumLikes());
+        object.put(resources.getString(R.string.key_user), ParseUser.getCurrentUser());
         object.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
