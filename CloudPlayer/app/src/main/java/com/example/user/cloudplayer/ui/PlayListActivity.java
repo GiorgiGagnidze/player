@@ -48,7 +48,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(a, CommentsActivity.class);
-                intent.putExtra(a.getResources().getString(R.string.key_playlistID), playlistId);
+                intent.putExtra(a.getResources().getString(R.string.key_playlistID), playlist.getID());
                 startActivity(intent);
             }
         });
