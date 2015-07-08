@@ -10,8 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.cloudplayer.R;
+import com.example.user.cloudplayer.adapters.LikesDialogAdapter;
 import com.example.user.cloudplayer.adapters.ProfileActivityAdapter;
 import com.example.user.cloudplayer.adapters.SongAdapter;
+import com.example.user.cloudplayer.fragments.LikesDialogFragment;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -63,12 +65,16 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //App.onLikeButtonClicked();
+                LikesDialogFragment dial=new LikesDialogFragment();
+                Bundle args = new Bundle();
+                args.putInt(a.getResources().getString(R.string.key_playlistID), playlistId);
+                dial.setArguments(args);
+                   //App.onLikeButtonClicked();
             }
         });
         currentPlayList=new ArrayList<Song>();
         for(int i=0;i<20;i++){
-            currentPlayList.add(new Song());
+            currentPlayList.add(new Song(null,null,null,null));
         }
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
