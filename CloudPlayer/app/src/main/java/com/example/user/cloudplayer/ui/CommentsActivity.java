@@ -39,17 +39,16 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         edit = (EditText)findViewById(R.id.activity_comments_edit_text);
         list = (ListView)findViewById(R.id.activity_comments_list_view);
         playListID = getIntent().getExtras().getString(getResources().getString(R.string.key_playlistID));
-        App.getCloudStorage().getComments(playListID);
         Button button = (Button)findViewById(R.id.activity_comments_button);
-
         app = (App)getApplication();
         app.addListener(this);
-
         if(savedInstanceState != null){ // if screen was rotated
             edit.setText(savedInstanceState.getString("EDIT"));
         } else {
             currentComments = new ArrayList<Comment>();
         }
+
+        App.getCloudStorage().getComments(playListID);
 
         button.setOnClickListener(
                 new Button.OnClickListener() {
@@ -84,6 +83,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         if(comments == null){
             sendToast(getResources().getString(R.string.on_comments_downloaded));
         } else {
+            //Log.i("blabla","pizdeeec");
             currentComments = comments;
             adapter = new CommentsActivityAdapter(this,currentComments);
             list.setAdapter(adapter);

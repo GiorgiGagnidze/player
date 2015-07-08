@@ -48,16 +48,13 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
         app = (App)getApplication();
         app.addListener(this);
-
-        App.getCloudStorage().downloadUsersPlaylists();
-
         if(savedInstanceState != null){ // if screen was rotated
             clickedPos = savedInstanceState.getInt("CLICKED_POS");
             edit.setText(savedInstanceState.getString("EDIT"));
         } else {
             currentPlayLists = new ArrayList<PlayList>();
         }
-
+        App.getCloudStorage().downloadUsersPlaylists();
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
