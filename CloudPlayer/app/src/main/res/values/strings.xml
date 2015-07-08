@@ -35,4 +35,8 @@
     <string name="like_table">like</string>
     <string name="song_table">like</string>
     <string name="file_col">data</string>
+    <string name="top_ten_alert">Top ten has not been downloaded, check internet connection!</string>
+    <string name="playlist_add_alert">PlayList has not been added, check internet connection!</string>
+    <string name="top_ten_title">Top ten play Playlists</string>
+    <string name="search_title">Search results</string>
 </resources>

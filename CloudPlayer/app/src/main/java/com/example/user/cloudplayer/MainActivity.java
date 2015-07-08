@@ -11,12 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.user.cloudplayer.fragments.AddSongDialogFragment;
 import com.example.user.cloudplayer.fragments.LoginDialogFragment;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
@@ -68,7 +69,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                if (charSequence.equals(""))
+                if (charSequence.toString().equals(""))
                     cloudStorage.getTopTen();
                 else
                     cloudStorage.getSearchResult(charSequence.toString());
@@ -142,12 +143,29 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-
+        final int count = 10;
+        if (playList == null){
+            Toast.makeText(this,getResources().getString(R.string.playlist_add_alert), Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        String keyWord = editText.getText().toString();
+        if (keyWord.equals("")){
+            if (playLists.size() < count){
+                playLists.add(playList);
+                fillListView(playLists);
+            }
+        } else {
+            if (playList.getName().contains(keyWord)){
+                playLists.add(playList);
+                fillListView(playLists);
+            }
+        }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-
+        // aqac chemi pasuxi unda mivce
     }
 
     @Override
@@ -172,12 +190,22 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
+        if (playLists != null) {
+            textView.setText(getResources().getString(R.string.search_title));
+            fillListView(playLists);
+        }else
+            Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
+                    .show();
     }
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
+        if (playLists != null) {
+            textView.setText(getResources().getString(R.string.top_ten_title));
+            fillListView(playLists);
+        }else
+            Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
+                    .show();
     }
 
     @Override
@@ -189,4 +217,16 @@ public class MainActivity extends Activity implements NetworkEventListener {
     public void onSongsDownloaded(ArrayList<Song> songs) {
 
     }
+
+    private void fillListView(ArrayList<PlayList> playLists){
+        this.playLists = playLists;
+        ArrayList<String> names =new ArrayList<String>();
+        for (PlayList list: playLists)
+            names.add(list.getName());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,names);
+        listView.setAdapter(adapter);
+    }
+
+    // likeze da unlikze pasuxi unda mivce
 }
