@@ -37,16 +37,13 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
         final int playlistId = 1;
-        if(savedInstanceState!=null){
-
-        }
+        final PlayList playlist=(PlayList)savedInstanceState.get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
         comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
         addSong = (Button) findViewById(R.id.add_button);
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
-
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +67,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             public void onClick(View v) {
                 LikesDialogFragment dial=new LikesDialogFragment();
                 Bundle args = new Bundle();
-                args.putInt(a.getResources().getString(R.string.key_playlistID), playlistId);
+                args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
                 dial.setArguments(args);
                    //App.onLikeButtonClicked();
             }
