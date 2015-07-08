@@ -36,8 +36,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
-        final int playlistId = 1;
-        final PlayList playlist=(PlayList)savedInstanceState.get(this.getResources().getString(R.string.key_playlistID));
+
+        final PlayList playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
         comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
