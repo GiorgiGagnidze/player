@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
             textView.setText(getResources().getString(R.string.search_title));
             fillListView(playLists);
         }else
-            Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
+            Toast.makeText(this,getResources().getString(R.string.search_alert), Toast.LENGTH_LONG)
                     .show();
     }
 

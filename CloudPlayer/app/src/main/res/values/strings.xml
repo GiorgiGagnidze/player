@@ -39,4 +39,5 @@
     <string name="playlist_add_alert">PlayList has not been added, check internet connection!</string>
     <string name="top_ten_title">Top ten play Playlists</string>
     <string name="search_title">Search results</string>
+    <string name="search_alert">Search results has not been downloaded, check internet connection!</string>
 </resources>
