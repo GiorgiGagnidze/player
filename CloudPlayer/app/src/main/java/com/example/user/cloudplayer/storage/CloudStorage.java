@@ -40,7 +40,7 @@ public class CloudStorage {
 
     public void getSearchResult(String keyword){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
-        query.whereContains(resources.getString(R.string.name_col),keyword);
+        query.whereMatches(resources.getString(R.string.name_col),"("+keyword+")", "i");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
