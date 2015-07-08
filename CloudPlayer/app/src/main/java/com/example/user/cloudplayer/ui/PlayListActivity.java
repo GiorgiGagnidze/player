@@ -3,12 +3,14 @@ package com.example.user.cloudplayer.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
 
 import com.example.user.cloudplayer.adapters.SongAdapter;
@@ -20,6 +22,7 @@ import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.model.Song;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -45,6 +48,16 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
         numLikes.setText(playlist.getNumLikes()+" people like this.");
+        numLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikesDialogFragment dial=new LikesDialogFragment();
+                Bundle args = new Bundle();
+                args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
+                dial.setArguments(args);
+                dial.show(getFragmentManager(), getResources().getString(R.string.tag));
+            }
+        });
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,31 +69,31 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         addSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddSongDialogFragment login = new AddSongDialogFragment();
-                login.show(getFragmentManager(), getResources().getString(R.string.tag));
+                AddSongDialogFragment addSong = new AddSongDialogFragment();
+                Bundle args = new Bundle();
+                args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
+                addSong.setArguments(args);
+                addSong.show(getFragmentManager(), getResources().getString(R.string.tag));
             }
         });
-        //if(cloudStorage.getUser()==me){
-        // like.setText("unlike"));
-        //addSong.setVisisibility(visible);
-        //}
+        ParseUser user=ParseUser.getCurrentUser();
+        if(playlist.getUserID().equals(user.getObjectId())){
+
+         addSong.setVisibility(View.VISIBLE);
+        }
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LikesDialogFragment dial=new LikesDialogFragment();
-                Bundle args = new Bundle();
-                args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
-                dial.setArguments(args);
-                dial.show(getFragmentManager(), getResources().getString(R.string.tag));
+
                    //App.onLikeButtonClicked();
             }
         });
+        App app = (App)getApplication();
+        app.addListener(this);
         currentPlayList=new ArrayList<Song>();
-        for(int i=0;i<20;i++){
-            currentPlayList.add(new Song(null,null,null,null));
-        }
-        adapter=new SongAdapter(this,currentPlayList);
-        list.setAdapter(adapter);
+        App.getCloudStorage().getSongs(playlist.getID());
+
+
 
 
     }
@@ -132,6 +145,10 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
+        Log.i("IRakli","Shemovida");
+        currentPlayList=songs;
+        Log.i("IRakli",Integer.toString(songs.size()));
+        adapter=new SongAdapter(this,currentPlayList);
+        list.setAdapter(adapter);
     }
 }

@@ -289,9 +289,11 @@ public class CloudStorage {
                         @Override
                         public void done(ParseException e) {
                             if (e==null){
+                                Log.i("Irakli","Kargia");
                                 listener.onSongAdded(new Song(name,object.getObjectId(),playlistID,
                                         file.getUrl()));
                             } else
+                                Log.i("Irakli","Yleobaa");
                                 listener.onSongAdded(null);
                         }
                     });

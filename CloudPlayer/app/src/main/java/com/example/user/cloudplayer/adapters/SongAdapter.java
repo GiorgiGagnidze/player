@@ -47,7 +47,7 @@ public class SongAdapter extends BaseAdapter{
         }
 
         TextView songName = (TextView)view.findViewById(R.id.activity_playlist_name);
-
+        songName.setText(songs.get(i).getName());
         view.setMinimumHeight(125);
 
         return view;
