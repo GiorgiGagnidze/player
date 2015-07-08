@@ -47,28 +47,28 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        sendToast("PlayList could not be added");
+        sendToast(getResources().getString(R.string.on_playList_added));
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        sendToast("PlayList could not be deleted");
+        sendToast(getResources().getString(R.string.on_playList_deleted));
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        sendToast("PlayLists could not be downloaded");
+        sendToast(getResources().getString(R.string.on_playLists_downloaded));
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        sendToast("Comments could not be downloaded");
+        sendToast(getResources().getString(R.string.on_comments_downloaded));
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
         if(likes == null){
-            sendToast("Authors of likes could not be downloaded");
+            sendToast(getResources().getString(R.string.on_likes_downloaded));
         } else {
             LikesDialogAdapter adapter = new LikesDialogAdapter(getActivity(),likes);
             list.setAdapter(adapter);
@@ -77,7 +77,7 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onCommentAdded(Comment comment) {
-        sendToast("Comment could not be posted");
+        sendToast(getResources().getString(R.string.on_comment_added));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
+        sendToast(getResources().getString(R.string.top_ten_alert));
     }
 
     @Override

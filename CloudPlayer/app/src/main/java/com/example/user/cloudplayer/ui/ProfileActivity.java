@@ -94,7 +94,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     @Override
     public void onPlayListAdded(PlayList playList) {
         if(playList == null){
-            sendToast("PlayList could not be added");
+            sendToast(getResources().getString(R.string.on_playList_added));
         } else {
             currentPlayLists.add(playList);
             adapter.updateListView(currentPlayLists);
@@ -114,14 +114,14 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     @Override
     public void onPlayListDeleted(PlayList playList) {
         if(playList == null){
-            sendToast("PlayList could not be deleted");
+            sendToast(getResources().getString(R.string.on_playList_deleted));
         } else {
             int index = findPlayListByID(playList.getID());
             if(index != -1){
                 currentPlayLists.remove(index);
                 adapter.updateListView(currentPlayLists);
             } else {
-                sendToast("PlayList was already deleted...");
+                sendToast(getResources().getString(R.string.on_playList_deleted_warning));
             }
         }
     }
@@ -129,7 +129,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
         if(playLists == null){
-            sendToast("PlayLists could not be downloaded");
+            sendToast(getResources().getString(R.string.on_playLists_downloaded));
         } else {
             currentPlayLists = playLists;
             adapter = new ProfileActivityAdapter(this,currentPlayLists);
@@ -139,17 +139,17 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        sendToast("Comments could not be downloaded");
+        sendToast(getResources().getString(R.string.on_comments_downloaded));
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        sendToast("Authors of likes could not be downloaded");
+        sendToast(getResources().getString(R.string.on_likes_downloaded));
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
-        sendToast("Comment could not be added");
+        sendToast(getResources().getString(R.string.on_comment_added));
     }
 
     @Override
@@ -159,7 +159,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
+        sendToast(getResources().getString(R.string.top_ten_alert));
     }
 
     @Override
