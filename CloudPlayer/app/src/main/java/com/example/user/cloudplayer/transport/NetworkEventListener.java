@@ -9,8 +9,8 @@ import com.example.user.cloudplayer.model.Song;
 import java.util.ArrayList;
 
 public interface NetworkEventListener {
-    public void onPlayListAdded(PlayList playList);// tu null mashin ar daemata
-    public void onPlayListDeleted(PlayList playList);// igive
+    public void onPlayListAdded(PlayList playList);
+    public void onPlayListDeleted(PlayList playList);
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists);
     public void onCommentsDownloaded(ArrayList<Comment> comments);
     public void onLikesDownloaded(ArrayList<Like> likes);
@@ -19,4 +19,8 @@ public interface NetworkEventListener {
     public void onTopTenDownloaded(ArrayList<PlayList> playLists);
     public void onSongAdded(Song song);
     public void onSongsDownloaded(ArrayList<Song> songs);
+    public void onLiked(Like like);
+    public void onHasLiked(Boolean bool);
+    public void onUnLiked(Like like);
+    public void onSongDeleted(Song song);
 }

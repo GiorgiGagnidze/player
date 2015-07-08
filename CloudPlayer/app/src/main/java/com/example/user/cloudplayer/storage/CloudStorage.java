@@ -174,15 +174,18 @@ public class CloudStorage {
                                 for (ParseObject object: parseObjects){
                                     ParseUser user=object.getParseUser(resources.getString(R.string.
                                             key_user));
+                                    try {
+                                        user.fetch();
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
                                     String name = user.getString(resources.getString(R.string.name_col));
-                                    String text = user.getString(resources.getString(R.string.text_col));
+                                    String text = object.getString(resources.getString(R.string.text_col));
                                     comments.add(new Comment(playlistID,name,text));
-                                    listener.onCommentsDownloaded(comments);
                                 }
-                            } else {
-                                Log.i("ylr","yle");
+                                listener.onCommentsDownloaded(comments);
+                            } else
                                 listener.onCommentsDownloaded(null);
-                            }
                         }
                     });
                 } else
@@ -209,6 +212,11 @@ public class CloudStorage {
                                 for (ParseObject object: parseObjects){
                                     ParseUser user=object.getParseUser(resources.getString(R.string.
                                             key_user));
+                                    try {
+                                        user.fetch();
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
                                     String name = user.getString(resources.getString(R.string.name_col));
                                     likes.add(new Like(playlistID,name));
                                 }
@@ -347,6 +355,20 @@ public class CloudStorage {
                         }
                     });
                 } // else
+            }
+        });
+    }
+
+    public void hasLiked(String playListID, String userID){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.like_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),ParseObject.createWithoutData(resources
+                .getString(R.string.play_table),playListID));
+        query.whereEqualTo(resources.getString(R.string.key_user), ParseUser.createWithoutData(resources
+                .getString(R.string.key_user), userID));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+
             }
         });
     }
