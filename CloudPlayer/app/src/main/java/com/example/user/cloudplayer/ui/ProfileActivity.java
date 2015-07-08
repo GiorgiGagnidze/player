@@ -1,6 +1,7 @@
 package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -32,6 +33,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     private EditText edit;
     private int clickedPos = -1;
     private ArrayList<PlayList> currentPlayLists;
+    private App app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,10 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         edit = (EditText)findViewById(R.id.activity_profile_edit_text);
 
         list = (ListView)findViewById(R.id.activity_profile_list_view);
+
+        app = (App)getApplication();
+        app.addListener(this);
+
         App.getCloudStorage().downloadUsersPlaylists();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -169,5 +175,10 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         toast.show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.removeListener(this);
+    }
 
 }

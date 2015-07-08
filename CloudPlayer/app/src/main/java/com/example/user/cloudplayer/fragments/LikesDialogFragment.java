@@ -24,6 +24,7 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     private String playListID;
     private ListView list;
+    private App app;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,8 +33,13 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
         d.setContentView(R.layout.likes_dialog);
         list = (ListView)d.findViewById(R.id.dialog_likes_list_view);
         playListID = "1";// merea shesacvleliii
+        app.addListener(this);
         App.getCloudStorage().getLikes(playListID);
         return d;
+    }
+
+    public void setApp(App app){
+        this.app = app;
     }
 
 
@@ -99,4 +105,11 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        app.removeListener(this);
+    }
+
 }

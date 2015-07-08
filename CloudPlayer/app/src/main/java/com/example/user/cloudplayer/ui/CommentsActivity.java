@@ -28,6 +28,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     private CommentsActivityAdapter adapter;
     private String playListID;
     private ArrayList<Comment> currentComments;
+    private App app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,9 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         playListID = getIntent().getExtras().getString(getResources().getString(R.string.key_playlistID));
         App.getCloudStorage().getComments(playListID);
         Button button = (Button)findViewById(R.id.activity_comments_button);
+
+        app = (App)getApplication();
+        app.addListener(this);
 
         button.setOnClickListener(
                 new Button.OnClickListener() {
@@ -119,6 +123,12 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         Toast toast = Toast.makeText(context, text, duration);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.removeListener(this);
     }
 
 }
