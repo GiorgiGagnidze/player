@@ -171,6 +171,26 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     }
 
+    @Override
+    public void onLiked(Like like) {
+
+    }
+
+    @Override
+    public void onHasLiked(Boolean bool) {
+
+    }
+
+    @Override
+    public void onUnLiked(Like like) {
+
+    }
+
+    @Override
+    public void onSongDeleted(Song song) {
+
+    }
+
     private void sendToast(CharSequence text){
         Context context = this;
         int duration = Toast.LENGTH_SHORT;
@@ -187,8 +207,8 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onSaveInstanceState (Bundle outState) {
-        outState.putString("EDIT",edit.getText().toString());
-        outState.putInt("CLICKED_POS",clickedPos);
+        outState.putString("EDIT", edit.getText().toString());
+        outState.putInt("CLICKED_POS", clickedPos);
     }
 
 }

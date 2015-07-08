@@ -283,7 +283,8 @@ public class CloudStorage {
 
     public void addSong(String path,final String playlistID,final String name){
         byte[] byteArray = getSongBytes(path);
-        final ParseFile file = new ParseFile(name,byteArray);
+        final String music = "music";
+        final ParseFile file = new ParseFile(music+name.substring(name.lastIndexOf(".")),byteArray);
         file.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -297,11 +298,9 @@ public class CloudStorage {
                         @Override
                         public void done(ParseException e) {
                             if (e==null){
-                                Log.i("Irakli","Kargia");
                                 listener.onSongAdded(new Song(name,object.getObjectId(),playlistID,
                                         file.getUrl()));
                             } else
-                                Log.i("Irakli","Yleobaa");
                                 listener.onSongAdded(null);
                         }
                     });
@@ -326,9 +325,7 @@ public class CloudStorage {
         return byteArray;
     }
 
-    // lishnebi envokes gareshe pirveli
-
-    public void addLike(Like like){
+    public void addLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
             @Override
@@ -340,21 +337,28 @@ public class CloudStorage {
                         @Override
                         public void done(ParseException e) {
                             if (e==null){
-                                final ParseObject object = new ParseObject(resources.getString(R.string.like_table));
+                                final ParseObject object = new ParseObject(resources.getString(R.
+                                        string.like_table));
                                 object.put(resources.getString(R.string.parent_col),parseObject);
-                                object.put(resources.getString(R.string.key_user), ParseUser.getCurrentUser());
+                                object.put(resources.getString(R.string.key_user), ParseUser.
+                                        getCurrentUser());
+                                final String name = ParseUser.getCurrentUser().getString(resources.
+                                        getString(R.string.name_col));
                                 object.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
                                         if (e == null){
-
-                                        }// onLiked envoke-it chanacvleba
+                                            listener.onLiked(new Like(like.getPlayListID(),name));
+                                        } else
+                                            listener.onLiked(null);
                                     }
                                 });
-                            } // else
+                            } else
+                                listener.onLiked(null);
                         }
                     });
-                } // else
+                } else
+                    listener.onLiked(null);
             }
         });
     }
@@ -368,7 +372,13 @@ public class CloudStorage {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-
+                if (e == null){
+                    if (parseObjects.size() == 0)
+                        listener.onHasLiked(false);
+                    else
+                        listener.onHasLiked(true);
+                } else
+                    listener.onHasLiked(null);
             }
         });
     }
@@ -401,5 +411,13 @@ public class CloudStorage {
                     listener.onSongAdded(null);
             }
         });
+    }
+
+    public void deleteSong(Song song){
+
+    }
+
+    public void unLike(Like like){
+        
     }
 }

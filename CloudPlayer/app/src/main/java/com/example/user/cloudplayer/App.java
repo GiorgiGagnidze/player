@@ -109,4 +109,28 @@ public class App extends Application implements NetworkEventListener {
         for (NetworkEventListener listener: listeners)
             listener.onSongsDownloaded(songs);
     }
+
+    @Override
+    public void onLiked(Like like) {
+        for (NetworkEventListener listener: listeners)
+            listener.onLiked(like);
+    }
+
+    @Override
+    public void onHasLiked(Boolean bool) {
+        for (NetworkEventListener listener: listeners)
+            listener.onHasLiked(bool);
+    }
+
+    @Override
+    public void onUnLiked(Like like) {
+        for (NetworkEventListener listener: listeners)
+            listener.onUnLiked(like);
+    }
+
+    @Override
+    public void onSongDeleted(Song song) {
+        for (NetworkEventListener listener: listeners)
+            listener.onSongDeleted(song);
+    }
 }

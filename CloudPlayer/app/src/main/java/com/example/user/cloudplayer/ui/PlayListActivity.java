@@ -151,4 +151,24 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
     }
+
+    @Override
+    public void onLiked(Like like) {
+
+    }
+
+    @Override
+    public void onHasLiked(Boolean bool) {
+
+    }
+
+    @Override
+    public void onUnLiked(Like like) {
+
+    }
+
+    @Override
+    public void onSongDeleted(Song song) {
+
+    }
 }

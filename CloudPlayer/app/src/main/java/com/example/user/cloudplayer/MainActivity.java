@@ -219,6 +219,26 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     }
 
+    @Override
+    public void onLiked(Like like) {
+
+    }
+
+    @Override
+    public void onHasLiked(Boolean bool) {
+
+    }
+
+    @Override
+    public void onUnLiked(Like like) {
+
+    }
+
+    @Override
+    public void onSongDeleted(Song song) {
+
+    }
+
     private void fillListView(ArrayList<PlayList> playLists){
         this.playLists = playLists;
         ArrayList<String> names =new ArrayList<String>();

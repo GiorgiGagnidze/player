@@ -60,4 +60,24 @@ public class PlayerActivity extends Activity implements NetworkEventListener {
     public void onSongsDownloaded(ArrayList<Song> songs) {
 
     }
+
+    @Override
+    public void onLiked(Like like) {
+
+    }
+
+    @Override
+    public void onHasLiked(Boolean bool) {
+
+    }
+
+    @Override
+    public void onUnLiked(Like like) {
+
+    }
+
+    @Override
+    public void onSongDeleted(Song song) {
+
+    }
 }
