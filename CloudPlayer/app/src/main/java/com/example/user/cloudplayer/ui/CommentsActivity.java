@@ -29,12 +29,13 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     private String playListID;
     private ArrayList<Comment> currentComments;
     private App app;
+    private EditText edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        final EditText edit = (EditText)findViewById(R.id.activity_comments_edit_text);
+        edit = (EditText)findViewById(R.id.activity_comments_edit_text);
         list = (ListView)findViewById(R.id.activity_comments_list_view);
         playListID = getIntent().getExtras().getString(getResources().getString(R.string.key_playlistID));
         App.getCloudStorage().getComments(playListID);
@@ -42,6 +43,10 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
         app = (App)getApplication();
         app.addListener(this);
+
+        if(savedInstanceState != null){ // if screen was rotated
+            edit.setText(savedInstanceState.getString("EDIT"));
+        }
 
         button.setOnClickListener(
                 new Button.OnClickListener() {
@@ -129,6 +134,11 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     protected void onDestroy() {
         super.onDestroy();
         app.removeListener(this);
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        outState.putString("EDIT",edit.getText().toString());
     }
 
 }

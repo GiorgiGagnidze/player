@@ -51,6 +51,11 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
         App.getCloudStorage().downloadUsersPlaylists();
 
+        if(savedInstanceState != null){ // if screen was rotated
+            clickedPos = savedInstanceState.getInt("CLICKED_POS");
+            edit.setText(savedInstanceState.getString("EDIT"));
+        }
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -179,6 +184,12 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     protected void onDestroy() {
         super.onDestroy();
         app.removeListener(this);
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        outState.putString("EDIT",edit.getText().toString());
+        outState.putInt("CLICKED_POS",clickedPos);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.user.cloudplayer.fragments;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.ListView;
@@ -32,7 +33,8 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
         d.setCanceledOnTouchOutside(false);
         d.setContentView(R.layout.likes_dialog);
         list = (ListView)d.findViewById(R.id.dialog_likes_list_view);
-        playListID = "1";// merea shesacvleliii
+        Bundle mArgs = getArguments();
+        playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
         app.addListener(this);
         App.getCloudStorage().getLikes(playListID);
         return d;
