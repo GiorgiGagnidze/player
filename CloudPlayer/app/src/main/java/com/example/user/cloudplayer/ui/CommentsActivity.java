@@ -63,23 +63,23 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        sendToast("PlayList could not be added");
+        sendToast(getResources().getString(R.string.on_playList_added));
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        sendToast("PlayList could not be deleted");
+        sendToast(getResources().getString(R.string.on_playList_deleted));
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        sendToast("PlayLists could not be downloaded");
+        sendToast(getResources().getString(R.string.on_playLists_downloaded));
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
         if(comments == null){
-            sendToast("Comments for this playList could not be downloaded");
+            sendToast(getResources().getString(R.string.on_comments_downloaded));
         } else {
             currentComments = comments;
             adapter = new CommentsActivityAdapter(this,currentComments);
@@ -89,13 +89,13 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        sendToast("Authors of likes could not be downloaded");
+        sendToast(getResources().getString(R.string.on_likes_downloaded));
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
         if(comment == null){
-            sendToast("Comment could not be posted");
+            sendToast(getResources().getString(R.string.on_comment_added));
         } else {
             currentComments.add(comment);
             adapter.updateListView(currentComments);
@@ -109,7 +109,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
+        sendToast(getResources().getString(R.string.top_ten_alert));
     }
 
     @Override

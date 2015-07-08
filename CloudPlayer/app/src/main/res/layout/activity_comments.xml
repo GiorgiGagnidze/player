@@ -23,14 +23,14 @@
             android:id="@+id/activity_comments_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Write new comment"
+            android:hint="@string/comments_text"
             android:textSize="25sp"/>
 
         <Button
             android:id="@+id/activity_comments_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comment"/>
+            android:text="@string/comments_text_button"/>
 
     </LinearLayout>
 

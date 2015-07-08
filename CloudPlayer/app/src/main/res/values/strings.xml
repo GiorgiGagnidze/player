@@ -39,5 +39,24 @@
     <string name="playlist_add_alert">PlayList has not been added, check internet connection!</string>
     <string name="top_ten_title">Top ten play Playlists</string>
     <string name="search_title">Search results</string>
+<<<<<<< HEAD
     <string name="search_alert">Search results has not been downloaded, check internet connection!</string>
+=======
+    <string name="comments_text">Write new comment</string>
+    <string name="comments_text_button">comment</string>
+    <string name="profile_playLists">PlayLists</string>
+    <string name="profile_new_playList">Add new playlist</string>
+    <string name="profile_add">add</string>
+    <string name="profile_delete">delete</string>
+
+    <string name="on_comment_added">Comment could not be added,check internet connection!</string>
+    <string name="on_likes_downloaded">Authors of likes could not be downloaded,check internet connection!</string>
+    <string name="on_comments_downloaded">Comments could not be downloaded,check internet connection!</string>
+    <string name="on_playLists_downloaded">PlayLists could not be downloaded,check internet connection!</string>
+    <string name="on_playList_deleted">PlayList could not be deleted,check internet connection!</string>
+    <string name="on_playList_deleted_warning">PlayList was already deleted...</string>
+    <string name="on_playList_added">PlayList could not be added,check internet connection!</string>
+
+
+>>>>>>> origin/master
 </resources>
