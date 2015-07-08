@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.cloudplayer.R;
-import com.example.user.cloudplayer.adapters.LikesDialogAdapter;
-import com.example.user.cloudplayer.adapters.ProfileActivityAdapter;
+
 import com.example.user.cloudplayer.adapters.SongAdapter;
+import com.example.user.cloudplayer.fragments.AddSongDialogFragment;
 import com.example.user.cloudplayer.fragments.LikesDialogFragment;
+
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -36,7 +37,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
-
         final PlayList playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
         comment = (Button) findViewById(R.id.comment);
@@ -44,6 +44,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         addSong = (Button) findViewById(R.id.add_button);
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
+        numLikes.setText(playlist.getNumLikes()+" people like this.");
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +56,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         addSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                AddSongDialogFragment login = new AddSongDialogFragment();
+                login.show(getFragmentManager(), getResources().getString(R.string.tag));
             }
         });
         //if(cloudStorage.getUser()==me){
@@ -69,6 +71,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 Bundle args = new Bundle();
                 args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
                 dial.setArguments(args);
+                dial.show(getFragmentManager(), getResources().getString(R.string.tag));
                    //App.onLikeButtonClicked();
             }
         });
