@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(activity, PlayListActivity.class);
                 intent.putExtra(activity.getResources().getString(R.string.key_playlistID),
-                        playLists.get(i).getID());
+                        playLists.get(i));
                 startActivity(intent);
             }
         });
