@@ -2,6 +2,7 @@ package com.example.user.cloudplayer.storage;
 
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.model.Comment;
@@ -40,7 +41,7 @@ public class CloudStorage {
 
     public void getSearchResult(String keyword){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
-        query.whereMatches(resources.getString(R.string.name_col),"("+keyword+")", "i");
+        query.whereMatches(resources.getString(R.string.name_col), "(" + keyword + ")", "i");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -178,8 +179,10 @@ public class CloudStorage {
                                     comments.add(new Comment(playlistID,name,text));
                                     listener.onCommentsDownloaded(comments);
                                 }
-                            } else
+                            } else {
+                                Log.i("ylr","yle");
                                 listener.onCommentsDownloaded(null);
+                            }
                         }
                     });
                 } else
@@ -316,17 +319,32 @@ public class CloudStorage {
     // lishnebi envokes gareshe pirveli
 
     public void addLike(Like like){
-        final ParseObject object = new ParseObject(resources.getString(R.string.like_table));
-        object.put(resources.getString(R.string.parent_col),ParseObject.createWithoutData(resources
-                .getString(R.string.play_table),like.getPlayListID()));
-        object.put(resources.getString(R.string.key_user), ParseUser.getCurrentUser());
-        object.saveInBackground(new SaveCallback() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
+        query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
             @Override
-            public void done(ParseException e) {
-                if (e == null){
+            public void done(final ParseObject parseObject, ParseException e) {
+                if (e==null){
+                    int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
+                    parseObject.put(resources.getString(R.string.numlikes_col),numLikes+1);
+                    parseObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e==null){
+                                final ParseObject object = new ParseObject(resources.getString(R.string.like_table));
+                                object.put(resources.getString(R.string.parent_col),parseObject);
+                                object.put(resources.getString(R.string.key_user), ParseUser.getCurrentUser());
+                                object.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null){
 
-                } else
-                    listener.onCommentAdded(null);// onLiked envoke-it chanacvleba
+                                        }// onLiked envoke-it chanacvleba
+                                    }
+                                });
+                            } // else
+                        }
+                    });
+                } // else
             }
         });
     }
