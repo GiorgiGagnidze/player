@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.adapters.LikesDialogAdapter;
@@ -56,14 +57,23 @@ public class AddSongDialogFragment extends DialogFragment {
         Uri allSongsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
         String path=null;
-        Log.i("Irakli","shemovida");
+
         Cursor cursor = getActivity().getContentResolver().query(allSongsUri,all,selection,null,null);
         if (cursor != null) {
+            //while (cursor.moveToNext()) {
 
-            if (cursor.moveToFirst())
-                Log.i("Irakli","shemovida");
-                path = cursor.getString(cursor
-                        .getColumnIndex(MediaStore.Audio.Media.DATA));
+                if (cursor.moveToFirst()) {
+                    Log.i("Irakli", "shemovida");
+                    path = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.DATA));
+                    String song_name = cursor
+                            .getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+                    Log.i("Irakli", song_name);
+                    Toast.makeText(getActivity().getApplicationContext(),song_name,Toast.LENGTH_SHORT).show();
+             //   }
+            }
+
             cursor.close();
         }
         return path;
