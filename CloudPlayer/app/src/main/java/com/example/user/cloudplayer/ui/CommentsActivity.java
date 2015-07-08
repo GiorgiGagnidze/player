@@ -3,6 +3,7 @@ package com.example.user.cloudplayer.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,8 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
         if(savedInstanceState != null){ // if screen was rotated
             edit.setText(savedInstanceState.getString("EDIT"));
+        } else {
+            currentComments = new ArrayList<Comment>();
         }
 
         button.setOnClickListener(

@@ -54,6 +54,8 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         if(savedInstanceState != null){ // if screen was rotated
             clickedPos = savedInstanceState.getInt("CLICKED_POS");
             edit.setText(savedInstanceState.getString("EDIT"));
+        } else {
+            currentPlayLists = new ArrayList<PlayList>();
         }
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
