@@ -145,9 +145,9 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-        Log.i("IRakli","Shemovida");
+
         currentPlayList=songs;
-        Log.i("IRakli",Integer.toString(songs.size()));
+
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
     }

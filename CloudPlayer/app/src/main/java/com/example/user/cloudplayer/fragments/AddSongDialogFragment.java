@@ -23,15 +23,17 @@ import java.util.HashMap;
 
 
 public class AddSongDialogFragment extends DialogFragment implements NetworkEventListener {
-
+    private AutoCompleteTextView txt;
+    private String playListID;
+    private Dialog d;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog d = new Dialog(getActivity());
+        d = new Dialog(getActivity());
         d.setCanceledOnTouchOutside(true);
         d.setContentView(R.layout.add_new_song_dialog);
-        final AutoCompleteTextView txt= (AutoCompleteTextView)d.findViewById(R.id.add_song_text_view);
+        txt= (AutoCompleteTextView)d.findViewById(R.id.add_song_text_view);
         Bundle mArgs = getArguments();
-        final String playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
+        playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
         Button add=(Button)d.findViewById(R.id.add_song_button);
         final HashMap<String ,String>  ar=getSongNames();
         String[] songNames=ar.keySet().toArray(new String[ar.size()]);
@@ -39,8 +41,7 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
             @Override
             public void onClick(View v) {
                 App.getCloudStorage().addSong(ar.get(txt.getText().toString()),playListID,txt.getText().toString());
-                txt.setText("");
-                d.dismiss();
+
             }
         });
         ArrayAdapter<String> adapter =
@@ -111,7 +112,12 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
 
     @Override
     public void onSongAdded(Song song) {
+        if(song==null){
 
+        }
+        else {
+            d.dismiss();
+        }
     }
 
     @Override
