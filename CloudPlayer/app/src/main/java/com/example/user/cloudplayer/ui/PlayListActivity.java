@@ -38,22 +38,23 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     private Button addSong;
     private final String LIKED="Unlike";
     private final String UNLIKED="Like";
+    private PlayList playlist;
+    private int isLiked;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
-        final PlayList playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
+        playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
+        isLiked=-1;
         final ParseUser user=ParseUser.getCurrentUser();
         comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
-
         addSong = (Button) findViewById(R.id.add_button);
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
-
         App.getCloudStorage().hasLiked(playlist.getID());
         numLikes.setText(playlist.getNumLikes()+" people like this.");
         numLikes.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +92,12 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Like l = new Like(playlist.getID(), user.getString(getResources().getString(R.string.name_col)));
                 if(like.getText().toString().equals(UNLIKED)) {
-                    Like l = new Like(playlist.getID(), user.getString(getResources().getString(R.string.name_col)));
+
                     App.getCloudStorage().addLike(l);
+                }else{
+                    App.getCloudStorage().unLike(l);
                 }
                    //App.onLikeButtonClicked();
             }
@@ -102,10 +106,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         app.addListener(this);
         currentPlayList=new ArrayList<Song>();
         App.getCloudStorage().getSongs(playlist.getID());
-
-
-
-
     }
 
     @Override
@@ -150,8 +150,12 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongAdded(Song song) {
-        currentPlayList.add(song);
-        adapter.notifyDataSetChanged();
+        if(song!=null){
+            Log.i("Irakli","SHemovedi");
+            currentPlayList.add(song);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
@@ -170,8 +174,16 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     public void onLiked(Like like) {
         if(like==null){
             Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT);
+
         }
         else{
+            if(isLiked==-1){
+                isLiked=playlist.getNumLikes()+1;
+            }
+            else{
+                isLiked++;
+            }
+            numLikes.setText(isLiked+" people like this.");
             this.like.setText("Unlike");
         }
     }
@@ -184,7 +196,19 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onUnLiked(Like like) {
+        if(like==null){
+            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
 
+        }
+        else{
+            if(isLiked==-1){
+                isLiked=playlist.getNumLikes()-1;
+            }else{
+                isLiked--;
+            }
+            numLikes.setText(isLiked+" people like this.");
+            this.like.setText("Like");
+        }
     }
 
     @Override
