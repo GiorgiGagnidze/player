@@ -111,32 +111,23 @@ public class CloudStorage {
         });
     }
 
-    // -
+    // +
     public void deletePlayList(final PlayList playList){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
-                R.string.play_table));
-        query.getInBackground(playList.getID(),new GetCallback<ParseObject>() {
+        ParseObject parseObject = ParseObject.createWithoutData
+                (resources.getString(R.string.play_table), playList.getID());
+        parseObject.deleteInBackground(new DeleteCallback() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (e == null){
-                    parseObject.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                listener.onPlayListDeleted(playList);
-                                deleteChildren(playList);
-                            }else
-                                listener.onPlayListDeleted(null);
-                        }
-                    });
-                } else
+            public void done(ParseException e) {
+                if (e == null) {
+                    listener.onPlayListDeleted(playList);
+                    deleteChildren(playList);
+                }else
                     listener.onPlayListDeleted(null);
             }
         });
     }
 
     private void deleteChildren(final PlayList playList){
-        ParseObject.createWithoutData(resources.getString(R.string.play_table),playList.getID());
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.comment_table));
         ParseObject parent = ParseObject.createWithoutData
                 (resources.getString(R.string.play_table), playList.getID());
@@ -145,7 +136,6 @@ public class CloudStorage {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e==null) {
-                    Log.i("esaa zoma", "" + parseObjects.size());
                     for (ParseObject object : parseObjects)
                         object.deleteEventually();
                 }
@@ -201,77 +191,61 @@ public class CloudStorage {
         });
     }
 
-    // -
+    // +
     public void getComments(final String playlistID){
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
-                R.string.play_table));
-        query1.getInBackground(playlistID,new GetCallback<ParseObject>() {
+        ParseObject parseObject =ParseObject.createWithoutData(resources.getString
+                (R.string.play_table),playlistID);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
+                comment_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
+        query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e==null){
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
-                            comment_table));
-                    query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> parseObjects, ParseException e) {
-                            if (e==null){
-                                ArrayList<Comment> comments = new ArrayList<Comment>();
-                                for (ParseObject object: parseObjects){
-                                    ParseUser user=object.getParseUser(resources.getString(R.string.
-                                            key_user));
-                                    try {
-                                        user.fetch();
-                                    } catch (ParseException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    String name = user.getString(resources.getString(R.string.name_col));
-                                    String text = object.getString(resources.getString(R.string.text_col));
-                                    comments.add(new Comment(playlistID,name,text));
-                                }
-                                listener.onCommentsDownloaded(comments);
-                            } else
-                                listener.onCommentsDownloaded(null);
+                    ArrayList<Comment> comments = new ArrayList<Comment>();
+                    for (ParseObject object: parseObjects){
+                        ParseUser user=object.getParseUser(resources.getString(R.string.
+                                key_user));
+                        try {
+                            user.fetch();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
                         }
-                    });
+                        String name = user.getString(resources.getString(R.string.name_col));
+                        String text = object.getString(resources.getString(R.string.text_col));
+                        comments.add(new Comment(playlistID,name,text));
+                    }
+                    listener.onCommentsDownloaded(comments);
                 } else
                     listener.onCommentsDownloaded(null);
             }
         });
     }
 
-    // -
+    // +
     public void getLikes(final String playlistID){
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
-                R.string.play_table));
-        query1.getInBackground(playlistID,new GetCallback<ParseObject>() {
+        ParseObject parseObject =ParseObject.createWithoutData(resources.getString
+                (R.string.play_table),playlistID);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
+                like_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
+        query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e==null){
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
-                            like_table));
-                    query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> parseObjects, ParseException e) {
-                            if (e==null){
-                                ArrayList<Like> likes = new ArrayList<Like>();
-                                for (ParseObject object: parseObjects){
-                                    ParseUser user=object.getParseUser(resources.getString(R.string.
-                                            key_user));
-                                    try {
-                                        user.fetch();
-                                    } catch (ParseException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    String name = user.getString(resources.getString(R.string.name_col));
-                                    likes.add(new Like(playlistID,name));
-                                }
-                                listener.onLikesDownloaded(likes);
-                            } else
-                                listener.onLikesDownloaded(null);
+                    ArrayList<Like> likes = new ArrayList<Like>();
+                    for (ParseObject object: parseObjects){
+                        ParseUser user=object.getParseUser(resources.getString(R.string.
+                                key_user));
+                        try {
+                            user.fetch();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
                         }
-                    });
+                        String name = user.getString(resources.getString(R.string.name_col));
+                        likes.add(new Like(playlistID,name));
+                    }
+                    listener.onLikesDownloaded(likes);
                 } else
                     listener.onLikesDownloaded(null);
             }
@@ -296,34 +270,26 @@ public class CloudStorage {
         });
     }
 
-    // -
+    // +
     public void getSongs(final String playlistID){
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
-                R.string.play_table));
-        query1.getInBackground(playlistID,new GetCallback<ParseObject>() {
+        ParseObject parseObject =ParseObject.createWithoutData(resources.getString
+                (R.string.play_table),playlistID);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
+                song_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
+        query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e==null){
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
-                            song_table));
-                    query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> parseObjects, ParseException e) {
-                            if (e==null){
-                                ArrayList<Song> songs = new ArrayList<Song>();
-                                for (ParseObject object: parseObjects){
-                                    String name = object.getString(resources.getString(R.string.
-                                            name_col));
-                                    String url = object.getParseFile(resources.getString(R.string.
-                                            file_col)).getUrl();
-                                    songs.add(new Song(name,object.getObjectId(),playlistID,url));
-                                }
-                                listener.onSongsDownloaded(songs);
-                            } else
-                                listener.onSongsDownloaded(null);
-                        }
-                    });
+                    ArrayList<Song> songs = new ArrayList<Song>();
+                    for (ParseObject object: parseObjects){
+                        String name = object.getString(resources.getString(R.string.
+                                name_col));
+                        String url = object.getParseFile(resources.getString(R.string.
+                                file_col)).getUrl();
+                        songs.add(new Song(name,object.getObjectId(),playlistID,url));
+                    }
+                    listener.onSongsDownloaded(songs);
                 } else
                     listener.onSongsDownloaded(null);
             }
@@ -375,7 +341,7 @@ public class CloudStorage {
         return byteArray;
     }
 
-    // -
+    // +
     public void unLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
@@ -428,7 +394,7 @@ public class CloudStorage {
         });
     }
 
-    // -
+    // +
     public void addLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
@@ -522,24 +488,16 @@ public class CloudStorage {
         });
     }
 
-    // -
+    // +
     public void deleteSong(final Song song){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
-                R.string.song_table));
-        query.getInBackground(song.getID(),new GetCallback<ParseObject>() {
+        ParseObject parseObject =ParseObject.createWithoutData(resources.getString
+                (R.string.song_table),song.getID());
+        parseObject.deleteInBackground(new DeleteCallback() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (e==null){
-                    parseObject.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e==null)
-                                listener.onSongDeleted(song);
-                            else
-                                listener.onSongDeleted(null);
-                        }
-                    });
-                } else
+            public void done(ParseException e) {
+                if (e==null)
+                    listener.onSongDeleted(song);
+                else
                     listener.onSongDeleted(null);
             }
         });
