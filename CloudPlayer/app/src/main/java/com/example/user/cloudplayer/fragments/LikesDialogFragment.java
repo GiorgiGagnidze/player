@@ -2,13 +2,8 @@ package com.example.user.cloudplayer.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
@@ -44,37 +39,23 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        if(playList == null) {
-            sendToast(getResources().getString(R.string.on_playList_added));
-        }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        if(playList == null) {
-            sendToast(getResources().getString(R.string.on_playList_deleted));
-        }
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        if(playLists == null) {
-            sendToast(getResources().getString(R.string.on_playLists_downloaded));
-        }
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        if(comments == null) {
-            sendToast(getResources().getString(R.string.on_comments_downloaded));
-        }
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        if(likes == null){
-            sendToast(getResources().getString(R.string.on_likes_downloaded));
-        } else {
+        if(likes != null){
             LikesDialogAdapter adapter = new LikesDialogAdapter(getActivity(),likes);
             list.setAdapter(adapter);
         }
@@ -82,31 +63,22 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onCommentAdded(Comment comment) {
-        if(comment == null) {
-            sendToast(getResources().getString(R.string.on_comment_added));
-        }
     }
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
     }
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-        if(playLists == null) {
-            sendToast(getResources().getString(R.string.top_ten_alert));
-        }
     }
 
     @Override
     public void onSongAdded(Song song) {
-
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
     }
 
     @Override
@@ -116,7 +88,6 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onHasLiked(Boolean bool) {
-
     }
 
     @Override
@@ -126,15 +97,6 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onSongDeleted(Song song) {
-
-    }
-
-    private void sendToast(CharSequence text){
-        Context context = getActivity();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     @Override

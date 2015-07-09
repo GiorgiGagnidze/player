@@ -191,7 +191,6 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onHasLiked(Boolean bool) {
-
     }
 
     @Override

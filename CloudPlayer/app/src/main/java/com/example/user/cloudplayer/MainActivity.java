@@ -177,12 +177,18 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-
+        if(playLists == null){
+            Toast.makeText(this,getResources().getString(R.string.on_playLists_downloaded), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-
+        if(comments == null) {
+            Toast.makeText(this,getResources().getString(R.string.on_comments_downloaded), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override

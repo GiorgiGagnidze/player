@@ -125,7 +125,10 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-
+        if(comments == null) {
+            Toast.makeText(this,getResources().getString(R.string.on_comments_downloaded), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
