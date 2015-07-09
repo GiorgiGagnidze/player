@@ -472,12 +472,11 @@ public class CloudStorage {
     }
 
     // +
-    public void hasLiked(String playListID, String userID){
+    public void hasLiked(String playListID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.like_table));
         query.whereEqualTo(resources.getString(R.string.parent_col),ParseObject.createWithoutData(resources
                 .getString(R.string.play_table),playListID));
-        query.whereEqualTo(resources.getString(R.string.key_user), ParseUser.createWithoutData(resources
-                .getString(R.string.key_user), userID));
+        query.whereEqualTo(resources.getString(R.string.key_user), ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
