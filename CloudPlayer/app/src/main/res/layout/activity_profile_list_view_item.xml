@@ -8,8 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginLeft="@dimen/song_left_margin"
+        android:layout_marginTop="@dimen/song_top_margin"/>
 
     <View
         android:layout_width="0dp"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textColor="@color/blue"
-        android:text="playList"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="5dp"/>
+        android:text="@string/see"
+        android:layout_marginTop="@dimen/song_top_margin"
+        android:layout_marginRight="@dimen/enter_right_margin"/>
 
 </LinearLayout>

@@ -25,10 +25,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class AddSongDialogFragment extends DialogFragment implements NetworkEventListener {
+public class AddSongDialogFragment extends DialogFragment {
     private AutoCompleteTextView txt;
     private String playListID;
     private Dialog d;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         d = new Dialog(getActivity());
@@ -36,8 +37,6 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
         d.setContentView(R.layout.add_new_song_dialog);
         txt= (AutoCompleteTextView)d.findViewById(R.id.add_song_text_view);
         Bundle mArgs = getArguments();
-        App app=(App)getActivity().getApplication();
-        app.addListener(this);
         playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
         Button add=(Button)d.findViewById(R.id.add_song_button);
         final HashMap<String ,String>  ar=getSongNames();
@@ -51,9 +50,8 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
                     App.getCloudStorage().addSong(val,playListID,key);
                     d.dismiss();
                 }
-                else Toast.makeText(getActivity().getApplicationContext(),"Enter Correct Song Name",Toast.LENGTH_SHORT).show();
-
-
+                else Toast.makeText(getActivity().getApplicationContext(),getResources().getString(
+                        R.string.enter_correct_song),Toast.LENGTH_SHORT).show();
             }
         });
         ArrayAdapter<String> adapter =
@@ -81,79 +79,4 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
         return songs;
     }
 
-
-    @Override
-    public void onPlayListAdded(PlayList playList) {
-
-    }
-
-    @Override
-    public void onPlayListDeleted(PlayList playList) {
-
-    }
-
-    @Override
-    public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-
-    }
-
-    @Override
-    public void onCommentsDownloaded(ArrayList<Comment> comments) {
-
-    }
-
-    @Override
-    public void onLikesDownloaded(ArrayList<Like> likes) {
-
-    }
-
-    @Override
-    public void onCommentAdded(Comment comment) {
-
-    }
-
-    @Override
-    public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
-    }
-
-    @Override
-    public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-
-    }
-
-    @Override
-    public void onSongAdded(Song song) {
-        if(song==null){
-
-        }
-        else {
-
-        }
-    }
-
-    @Override
-    public void onSongsDownloaded(ArrayList<Song> songs) {
-
-    }
-
-    @Override
-    public void onLiked(Like like) {
-
-    }
-
-    @Override
-    public void onHasLiked(Boolean bool) {
-
-    }
-
-    @Override
-    public void onUnLiked(Like like) {
-
-    }
-
-    @Override
-    public void onSongDeleted(Song song) {
-
-    }
 }

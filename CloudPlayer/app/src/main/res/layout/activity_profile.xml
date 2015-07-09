@@ -8,8 +8,8 @@
         android:layout_height="wrap_content"
         android:text="@string/profile_playLists"
         android:textStyle="bold"
-        android:textSize="30sp"
-        android:layout_marginTop="10dp"
+        android:textSize="@dimen/title_shrift_size"
+        android:layout_marginTop="@dimen/title_top_margin"
         android:gravity="center"/>
 
     <LinearLayout

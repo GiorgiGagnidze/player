@@ -8,17 +8,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="5dp"
-        android:textSize="20sp"/>
+        android:layout_marginTop="@dimen/comment_margin"
+        android:layout_marginLeft="@dimen/name_left_margin"
+        android:textSize="@dimen/shrift_size"/>
 
     <TextView
         android:id="@+id/activity_comments_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginTop="18dp"
-        android:layout_marginLeft="15dp"
-        android:textSize="15dp"/>
+        android:layout_marginTop="@dimen/comment_top_margin"
+        android:layout_marginLeft="@dimen/comment_left_margin"
+        android:textSize="@dimen/name_shrift_size"/>
 
 </LinearLayout>

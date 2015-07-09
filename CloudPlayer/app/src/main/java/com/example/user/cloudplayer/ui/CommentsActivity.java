@@ -31,6 +31,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     private ArrayList<Comment> currentComments;
     private App app;
     private EditText edit;
+    private static final String edit_key = "EDIT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         app = (App)getApplication();
         app.addListener(this);
         if(savedInstanceState != null){ // if screen was rotated
-            edit.setText(savedInstanceState.getString("EDIT"));
+            edit.setText(savedInstanceState.getString(edit_key));
         } else {
             currentComments = new ArrayList<Comment>();
         }
@@ -122,7 +123,10 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
+        if(playLists == null){
+            Toast.makeText(this,getResources().getString(R.string.search_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -135,17 +139,26 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongAdded(Song song) {
-
+        if (song == null){
+            Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
+        if(songs==null){
+            Toast.makeText(this,getResources().getString(R.string.songs_download_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onLiked(Like like) {
-
+        if(like==null){
+            Toast.makeText(this,getResources().getString(R.string.like_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -154,12 +167,18 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onUnLiked(Like like) {
-
+        if(like==null){
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.unlike_alert),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onSongDeleted(Song song) {
-
+        if(song==null){
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -170,7 +189,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSaveInstanceState (Bundle outState) {
-        outState.putString("EDIT", edit.getText().toString());
+        outState.putString(edit_key, edit.getText().toString());
     }
 
 }

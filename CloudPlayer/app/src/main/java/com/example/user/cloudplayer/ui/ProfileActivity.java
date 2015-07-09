@@ -1,10 +1,7 @@
 package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,20 +25,20 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     private ListView list;
     private ProfileActivityAdapter adapter;
-    private Button addButton;
-    private Button deleteButton;
     private EditText edit;
     private int clickedPos = -1;
     private ArrayList<PlayList> currentPlayLists;
     private App app;
+    private static final String edit_key = "EDIT";
+    private static final String click_key = "CLICKED_POS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        addButton = (Button)findViewById(R.id.activity_profile_button_add);
-        deleteButton = (Button)findViewById(R.id.activity_profile_button_delete);
+        Button addButton = (Button)findViewById(R.id.activity_profile_button_add);
+        Button deleteButton = (Button)findViewById(R.id.activity_profile_button_delete);
         edit = (EditText)findViewById(R.id.activity_profile_edit_text);
 
         list = (ListView)findViewById(R.id.activity_profile_list_view);
@@ -49,8 +46,8 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         app = (App)getApplication();
         app.addListener(this);
         if(savedInstanceState != null){ // if screen was rotated
-            clickedPos = savedInstanceState.getInt("CLICKED_POS");
-            edit.setText(savedInstanceState.getString("EDIT"));
+            clickedPos = savedInstanceState.getInt(click_key);
+            edit.setText(savedInstanceState.getString(edit_key));
         } else {
             currentPlayLists = new ArrayList<PlayList>();
         }
@@ -163,7 +160,10 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-
+        if(playLists == null){
+            Toast.makeText(this,getResources().getString(R.string.search_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -176,17 +176,26 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onSongAdded(Song song) {
-
+        if (song == null){
+            Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
+        if(songs==null){
+            Toast.makeText(this,getResources().getString(R.string.songs_download_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onLiked(Like like) {
-
+        if(like==null){
+            Toast.makeText(this,getResources().getString(R.string.like_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -195,12 +204,18 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onUnLiked(Like like) {
-
+        if(like==null){
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.unlike_alert),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onSongDeleted(Song song) {
-
+        if(song==null){
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -211,8 +226,8 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onSaveInstanceState (Bundle outState) {
-        outState.putString("EDIT", edit.getText().toString());
-        outState.putInt("CLICKED_POS", clickedPos);
+        outState.putString(edit_key, edit.getText().toString());
+        outState.putInt(click_key, clickedPos);
     }
 
 }

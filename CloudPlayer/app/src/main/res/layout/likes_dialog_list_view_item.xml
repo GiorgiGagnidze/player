@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginLeft="@dimen/song_left_margin"
+        android:layout_marginTop="@dimen/song_top_margin"/>
 
 </LinearLayout>

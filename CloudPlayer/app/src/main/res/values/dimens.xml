@@ -3,4 +3,21 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="custom_margin">8dp</dimen>
+    <dimen name="custom_player_margin">15dp</dimen>
+    <dimen name="seek_margin">10dp</dimen>
+    <dimen name="wallpaper_margin">20dp</dimen>
+    <dimen name="name_top_margin">23dp</dimen>
+    <dimen name="shrift_size">20sp</dimen>
+    <dimen name="comment_shrift_size">25sp</dimen>
+    <dimen name="name_shrift_size">15sp</dimen>
+    <dimen name="comment_margin">20dp</dimen>
+    <dimen name="name_left_margin">5dp</dimen>
+    <dimen name="comment_top_margin">18dp</dimen>
+    <dimen name="comment_left_margin">15dp</dimen>
+    <dimen name="song_left_margin">15dp</dimen>
+    <dimen name="song_top_margin">20dp</dimen>
+    <dimen name="title_top_margin">10dp</dimen>
+    <dimen name="title_shrift_size">30sp</dimen>
+    <dimen name="enter_right_margin">5dp</dimen>
+    <dimen name="add_shrift_size">25sp</dimen>
 </resources>

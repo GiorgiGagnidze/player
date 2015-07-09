@@ -15,17 +15,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/activity_player_delete_add"
             android:src="@android:drawable/ic_delete"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginTop="@dimen/custom_player_margin"
+            android:layout_marginLeft="@dimen/custom_player_margin"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="songis saxeli"
             android:textStyle="bold"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="23dp"
-            android:textSize="20sp"/>
+            android:layout_marginLeft="@dimen/custom_player_margin"
+            android:layout_marginTop="@dimen/name_top_margin"
+            android:textSize="@dimen/shrift_size"/>
 
     </LinearLayout>
 
@@ -37,15 +36,15 @@
         android:layout_centerInParent="true"
         android:scaleType="fitXY"
         android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="@dimen/wallpaper_margin"
+        android:layout_marginBottom="@dimen/wallpaper_margin"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="@dimen/custom_player_margin">
 
         <ImageButton
             style="?android:attr/buttonStyleSmall"
@@ -82,9 +81,9 @@
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginBottom="@dimen/custom_player_margin"
+        android:layout_marginLeft="@dimen/seek_margin"
+        android:layout_marginRight="@dimen/seek_margin"/>
 
 </LinearLayout>
 

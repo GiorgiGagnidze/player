@@ -166,13 +166,18 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        ArrayList<String> names =new ArrayList<String>();
-        for (PlayList list: playLists)
-            if (!list.getID().equals(playList.getID()))
-                names.add(list.getName());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,names);
-        listView.setAdapter(adapter);
+        if(playList == null) {
+            Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
+                    .show();
+        } else {
+            ArrayList<String> names = new ArrayList<String>();
+            for (PlayList list : playLists)
+                if (!list.getID().equals(playList.getID()))
+                    names.add(list.getName());
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, names);
+            listView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -193,12 +198,18 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-
+        if(likes == null) {
+            Toast.makeText(this,getResources().getString(R.string.on_likes_downloaded), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
-
+        if(comment == null){
+            Toast.makeText(this,getResources().getString(R.string.on_comment_added), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -223,12 +234,18 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongAdded(Song song) {
-
+        if (song == null){
+            Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
-
+        if(songs==null){
+            Toast.makeText(this,getResources().getString(R.string.songs_download_alert), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -237,12 +254,13 @@ public class MainActivity extends Activity implements NetworkEventListener {
         if (like != null){
             if (keyWord.equals(""))
                 cloudStorage.getTopTen();
-        }
+        } else
+            Toast.makeText(this,getResources().getString(R.string.like_alert), Toast.LENGTH_LONG)
+                    .show();
     }
 
     @Override
     public void onHasLiked(Boolean bool) {
-
     }
 
     @Override
@@ -251,12 +269,17 @@ public class MainActivity extends Activity implements NetworkEventListener {
         if (like != null){
             if (keyWord.equals(""))
                 cloudStorage.getTopTen();
-        }
+        } else
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.unlike_alert),
+                    Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSongDeleted(Song song) {
-
+        if(song==null){
+            Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void fillListView(ArrayList<PlayList> playLists){

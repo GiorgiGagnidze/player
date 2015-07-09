@@ -24,7 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/comments_text"
-            android:textSize="25sp"/>
+            android:textSize="@dimen/comment_shrift_size"/>
 
         <Button
             android:id="@+id/activity_comments_button"
