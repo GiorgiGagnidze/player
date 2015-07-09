@@ -65,17 +65,23 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        sendToast(getResources().getString(R.string.on_playList_added));
+        if(playList == null) {
+            sendToast(getResources().getString(R.string.on_playList_added));
+        }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        sendToast(getResources().getString(R.string.on_playList_deleted));
+        if(playList == null) {
+            sendToast(getResources().getString(R.string.on_playList_deleted));
+        }
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        sendToast(getResources().getString(R.string.on_playLists_downloaded));
+        if(playLists == null) {
+            sendToast(getResources().getString(R.string.on_playLists_downloaded));
+        }
     }
 
     @Override
@@ -83,7 +89,6 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         if(comments == null){
             sendToast(getResources().getString(R.string.on_comments_downloaded));
         } else {
-            //Log.i("blabla","pizdeeec");
             currentComments = comments;
             adapter = new CommentsActivityAdapter(this,currentComments);
             list.setAdapter(adapter);
@@ -92,7 +97,9 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        sendToast(getResources().getString(R.string.on_likes_downloaded));
+        if(likes == null) {
+            sendToast(getResources().getString(R.string.on_likes_downloaded));
+        }
     }
 
     @Override
@@ -112,7 +119,9 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-        sendToast(getResources().getString(R.string.top_ten_alert));
+        if(playLists == null) {
+            sendToast(getResources().getString(R.string.top_ten_alert));
+        }
     }
 
     @Override

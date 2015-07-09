@@ -138,17 +138,23 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        sendToast(getResources().getString(R.string.on_comments_downloaded));
+        if(comments == null) {
+            sendToast(getResources().getString(R.string.on_comments_downloaded));
+        }
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        sendToast(getResources().getString(R.string.on_likes_downloaded));
+        if(likes == null) {
+            sendToast(getResources().getString(R.string.on_likes_downloaded));
+        }
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
-        sendToast(getResources().getString(R.string.on_comment_added));
+        if(comment == null) {
+            sendToast(getResources().getString(R.string.on_comment_added));
+        }
     }
 
     @Override
@@ -158,7 +164,9 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-        sendToast(getResources().getString(R.string.top_ten_alert));
+        if(playLists == null) {
+            sendToast(getResources().getString(R.string.top_ten_alert));
+        }
     }
 
     @Override

@@ -44,22 +44,30 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        sendToast(getResources().getString(R.string.on_playList_added));
+        if(playList == null) {
+            sendToast(getResources().getString(R.string.on_playList_added));
+        }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        sendToast(getResources().getString(R.string.on_playList_deleted));
+        if(playList == null) {
+            sendToast(getResources().getString(R.string.on_playList_deleted));
+        }
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        sendToast(getResources().getString(R.string.on_playLists_downloaded));
+        if(playLists == null) {
+            sendToast(getResources().getString(R.string.on_playLists_downloaded));
+        }
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        sendToast(getResources().getString(R.string.on_comments_downloaded));
+        if(comments == null) {
+            sendToast(getResources().getString(R.string.on_comments_downloaded));
+        }
     }
 
     @Override
@@ -74,7 +82,9 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onCommentAdded(Comment comment) {
-        sendToast(getResources().getString(R.string.on_comment_added));
+        if(comment == null) {
+            sendToast(getResources().getString(R.string.on_comment_added));
+        }
     }
 
     @Override
@@ -84,7 +94,9 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-        sendToast(getResources().getString(R.string.top_ten_alert));
+        if(playLists == null) {
+            sendToast(getResources().getString(R.string.top_ten_alert));
+        }
     }
 
     @Override
