@@ -76,6 +76,8 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         if(playList == null) {
             Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
                     .show();
+        }  else if(playListID.equals(playList.getID())){
+            this.finish();
         }
     }
 
