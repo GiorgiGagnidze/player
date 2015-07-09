@@ -54,7 +54,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
 
-        App.getCloudStorage().hasLiked(playlist.getID(), user.getString(getResources().getString(R.string.name_col)));
+        App.getCloudStorage().hasLiked(playlist.getID());
         numLikes.setText(playlist.getNumLikes()+" people like this.");
         numLikes.setOnClickListener(new View.OnClickListener() {
             @Override
