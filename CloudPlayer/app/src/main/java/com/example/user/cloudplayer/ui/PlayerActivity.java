@@ -1,7 +1,10 @@
 package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
+import android.os.Bundle;
 
+import com.example.user.cloudplayer.App;
+import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -11,6 +14,17 @@ import com.example.user.cloudplayer.transport.NetworkEventListener;
 import java.util.ArrayList;
 
 public class PlayerActivity extends Activity implements NetworkEventListener {
+
+    private App app;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player);
+        app = (App)getApplication();
+        app.addListener(this);
+    }
+
     @Override
     public void onPlayListAdded(PlayList playList) {
 
@@ -80,4 +94,11 @@ public class PlayerActivity extends Activity implements NetworkEventListener {
     public void onSongDeleted(Song song) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.removeListener(this);
+    }
+
 }
