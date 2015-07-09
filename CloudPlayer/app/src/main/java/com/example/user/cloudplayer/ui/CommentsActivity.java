@@ -66,28 +66,32 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     @Override
     public void onPlayListAdded(PlayList playList) {
         if(playList == null) {
-            sendToast(getResources().getString(R.string.on_playList_added));
+            Toast.makeText(this,getResources().getString(R.string.on_playList_added), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
         if(playList == null) {
-            sendToast(getResources().getString(R.string.on_playList_deleted));
+            Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
         if(playLists == null) {
-            sendToast(getResources().getString(R.string.on_playLists_downloaded));
+            Toast.makeText(this,getResources().getString(R.string.on_playLists_downloaded), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
         if(comments == null){
-            sendToast(getResources().getString(R.string.on_comments_downloaded));
+            Toast.makeText(this,getResources().getString(R.string.on_comments_downloaded), Toast.LENGTH_LONG)
+                    .show();
         } else {
             currentComments = comments;
             adapter = new CommentsActivityAdapter(this,currentComments);
@@ -98,14 +102,16 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
         if(likes == null) {
-            sendToast(getResources().getString(R.string.on_likes_downloaded));
+            Toast.makeText(this,getResources().getString(R.string.on_likes_downloaded), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
         if(comment == null){
-            sendToast(getResources().getString(R.string.on_comment_added));
+            Toast.makeText(this,getResources().getString(R.string.on_comment_added), Toast.LENGTH_LONG)
+                    .show();
         } else {
             currentComments.add(comment);
             adapter.updateListView(currentComments);
@@ -120,7 +126,8 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
         if(playLists == null) {
-            sendToast(getResources().getString(R.string.top_ten_alert));
+            Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -152,14 +159,6 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
     @Override
     public void onSongDeleted(Song song) {
 
-    }
-
-    private void sendToast(CharSequence text){
-        Context context = this;
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     @Override
