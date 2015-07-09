@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,20 +31,16 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog d = new Dialog(getActivity());
-        d.setCanceledOnTouchOutside(false);
+        d.setCanceledOnTouchOutside(true);
         d.setContentView(R.layout.likes_dialog);
         list = (ListView)d.findViewById(R.id.dialog_likes_list_view);
         Bundle mArgs = getArguments();
         playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
+        app=(App)getActivity().getApplication();
         app.addListener(this);
         App.getCloudStorage().getLikes(playListID);
         return d;
     }
-
-    public void setApp(App app){
-        this.app = app;
-    }
-
 
     @Override
     public void onPlayListAdded(PlayList playList) {

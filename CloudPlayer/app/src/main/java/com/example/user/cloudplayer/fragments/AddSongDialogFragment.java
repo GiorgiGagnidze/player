@@ -1,5 +1,6 @@
 package com.example.user.cloudplayer.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.database.Cursor;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.model.Comment;
@@ -33,6 +36,8 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
         d.setContentView(R.layout.add_new_song_dialog);
         txt= (AutoCompleteTextView)d.findViewById(R.id.add_song_text_view);
         Bundle mArgs = getArguments();
+        App app=(App)getActivity().getApplication();
+        app.addListener(this);
         playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
         Button add=(Button)d.findViewById(R.id.add_song_button);
         final HashMap<String ,String>  ar=getSongNames();
@@ -40,7 +45,14 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.getCloudStorage().addSong(ar.get(txt.getText().toString()),playListID,txt.getText().toString());
+                String key=txt.getText().toString();
+                String val=ar.get(key);
+                if(val!=null){
+                    App.getCloudStorage().addSong(val,playListID,key);
+                    d.dismiss();
+                }
+                else Toast.makeText(getActivity().getApplicationContext(),"Enter Correct Song Name",Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -116,7 +128,7 @@ public class AddSongDialogFragment extends DialogFragment implements NetworkEven
 
         }
         else {
-            d.dismiss();
+
         }
     }
 

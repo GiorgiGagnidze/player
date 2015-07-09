@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
@@ -35,6 +36,9 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     private TextView numLikes;
     private ArrayList<Song> currentPlayList;
     private Button addSong;
+    private final String LIKED="Unlike";
+    private final String UNLIKED="Like";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +46,20 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_playlist);
         final PlayList playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
+        final ParseUser user=ParseUser.getCurrentUser();
         comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
+
         addSong = (Button) findViewById(R.id.add_button);
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
+
+        App.getCloudStorage().hasLiked(playlist.getID(),user.getString(getResources().getString(R.string.name_col)));
         numLikes.setText(playlist.getNumLikes()+" people like this.");
         numLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LikesDialogFragment dial=new LikesDialogFragment();
+               LikesDialogFragment dial=new LikesDialogFragment();
                 Bundle args = new Bundle();
                 args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
                 dial.setArguments(args);
@@ -76,15 +84,17 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 addSong.show(getFragmentManager(), getResources().getString(R.string.tag));
             }
         });
-        ParseUser user=ParseUser.getCurrentUser();
-        if(playlist.getUserID().equals(user.getObjectId())){
 
-         addSong.setVisibility(View.VISIBLE);
+        if(playlist.getUserID().equals(user.getObjectId())){
+             addSong.setVisibility(View.VISIBLE);
         }
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(like.getText().toString().equals(UNLIKED)) {
+                    Like l = new Like(playlist.getID(), user.getString(getResources().getString(R.string.name_col)));
+                    App.getCloudStorage().addLike(l);
+                }
                    //App.onLikeButtonClicked();
             }
         });
@@ -140,26 +150,32 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongAdded(Song song) {
-
+        currentPlayList.add(song);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
 
         currentPlayList=songs;
-
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
     }
 
     @Override
     public void onLiked(Like like) {
-
+        if(like==null){
+            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT);
+        }
+        else{
+            this.like.setText("Unlike");
+        }
     }
 
     @Override
     public void onHasLiked(Boolean bool) {
-
+        if(bool==true)  like.setText(LIKED);
+        else if(bool==false)  like.setText(UNLIKED);
     }
 
     @Override
