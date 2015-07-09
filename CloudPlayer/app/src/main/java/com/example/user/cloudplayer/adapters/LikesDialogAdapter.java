@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.user.cloudplayer.R;
+import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 
 import java.util.ArrayList;
@@ -20,6 +21,11 @@ public class LikesDialogAdapter extends BaseAdapter {
     public LikesDialogAdapter(Activity context,ArrayList<Like> likes){
         this.context = context;
         this.likes = likes;
+    }
+
+    public void updateListView(ArrayList<Like> likes){
+        this.likes = likes;
+        this.notifyDataSetChanged();
     }
 
     @Override
