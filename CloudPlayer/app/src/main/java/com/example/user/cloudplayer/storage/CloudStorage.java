@@ -39,6 +39,7 @@ public class CloudStorage {
         this.resources = resources;
     }
 
+    // +
     public void getSearchResult(String keyword){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.whereMatches(resources.getString(R.string.name_col), "(" + keyword + ")", "i");
@@ -63,6 +64,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void getTopTen(){
         final int limit = 10;
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
@@ -90,6 +92,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void addNewPlaylist(final PlayList playList){
         final ParseObject object = new ParseObject(resources.getString(R.string.play_table));
         object.put(resources.getString(R.string.name_col),playList.getName());
@@ -108,6 +111,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void deletePlayList(final PlayList playList){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
                 R.string.play_table));
@@ -132,9 +136,46 @@ public class CloudStorage {
     }
 
     private void deleteChildren(final PlayList playList){
-
+        ParseObject.createWithoutData(resources.getString(R.string.play_table),playList.getID());
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.comment_table));
+        ParseObject parent = ParseObject.createWithoutData
+                (resources.getString(R.string.play_table), playList.getID());
+        query.whereEqualTo(resources.getString(R.string.parent_col),parent);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e==null) {
+                    Log.i("esaa zoma", "" + parseObjects.size());
+                    for (ParseObject object : parseObjects)
+                        object.deleteEventually();
+                }
+            }
+        });
+        query = ParseQuery.getQuery(resources.getString(R.string.like_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),parent);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e==null) {
+                    for (ParseObject object : parseObjects)
+                        object.deleteEventually();
+                }
+            }
+        });
+        query = ParseQuery.getQuery(resources.getString(R.string.song_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),parent);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e==null) {
+                    for (ParseObject object : parseObjects)
+                        object.deleteEventually();
+                }
+            }
+        });
     }
 
+    // +
     public void downloadUsersPlaylists(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.whereEqualTo(resources.getString(R.string.key_user),ParseUser.getCurrentUser());
@@ -160,6 +201,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void getComments(final String playlistID){
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
                 R.string.play_table));
@@ -198,6 +240,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void getLikes(final String playlistID){
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
                 R.string.play_table));
@@ -235,6 +278,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void addComment(final Comment comment){
         final ParseObject object = new ParseObject(resources.getString(R.string.comment_table));
         object.put(resources.getString(R.string.parent_col),ParseObject.createWithoutData(resources
@@ -252,6 +296,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void getSongs(final String playlistID){
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery(resources.getString(
                 R.string.play_table));
@@ -285,6 +330,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void addSong(String path,final String playlistID,final String name){
         byte[] byteArray = getSongBytes(path);
         final String music = "music";
@@ -329,6 +375,7 @@ public class CloudStorage {
         return byteArray;
     }
 
+    // -
     public void unLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
@@ -381,6 +428,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void addLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
@@ -423,6 +471,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void hasLiked(String playListID, String userID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.like_table));
         query.whereEqualTo(resources.getString(R.string.parent_col),ParseObject.createWithoutData(resources
@@ -443,6 +492,7 @@ public class CloudStorage {
         });
     }
 
+    // +
     public void addSongFromOtherUser(final Song song,final String playListID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
                 R.string.song_table));
@@ -473,6 +523,7 @@ public class CloudStorage {
         });
     }
 
+    // -
     public void deleteSong(final Song song){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
                 R.string.song_table));

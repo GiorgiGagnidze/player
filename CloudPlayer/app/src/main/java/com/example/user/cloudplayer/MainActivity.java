@@ -166,7 +166,13 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        // aqac chemi pasuxi unda mivce
+        ArrayList<String> names =new ArrayList<String>();
+        for (PlayList list: playLists)
+            if (!list.getID().equals(playList.getID()))
+                names.add(list.getName());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,names);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -221,7 +227,11 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onLiked(Like like) {
-
+        String keyWord = editText.getText().toString();
+        if (like != null){
+            if (keyWord.equals(""))
+                cloudStorage.getTopTen();
+        }
     }
 
     @Override
@@ -231,7 +241,11 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onUnLiked(Like like) {
-
+        String keyWord = editText.getText().toString();
+        if (like != null){
+            if (keyWord.equals(""))
+                cloudStorage.getTopTen();
+        }
     }
 
     @Override
@@ -249,5 +263,4 @@ public class MainActivity extends Activity implements NetworkEventListener {
         listView.setAdapter(adapter);
     }
 
-    // likeze da unlikze pasuxi unda mivce
 }

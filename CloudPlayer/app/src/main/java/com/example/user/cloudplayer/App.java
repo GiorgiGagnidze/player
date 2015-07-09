@@ -46,6 +46,7 @@ public class App extends Application implements NetworkEventListener {
                 getResources().getString(R.string.client_key));
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
         ParseACL.setDefaultACL(acl,true);
         cloudStorage.setResources(getResources());
     }
