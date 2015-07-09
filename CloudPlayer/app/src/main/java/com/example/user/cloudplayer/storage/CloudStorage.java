@@ -325,6 +325,53 @@ public class CloudStorage {
         return byteArray;
     }
 
+    public void unLike(final Like like){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
+        query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
+            @Override
+            public void done(final ParseObject parseObject, ParseException e) {
+                if (e==null){
+                    int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
+                    parseObject.put(resources.getString(R.string.numlikes_col),numLikes-1);
+                    parseObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e==null){
+                                unLikeHelper(like);
+                            } else
+                                listener.onUnLiked(null);
+                        }
+                    });
+                } else
+                    listener.onUnLiked(null);
+            }
+        });
+    }
+
+    private void unLikeHelper(final Like like){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.like_table));
+        query.whereEqualTo(resources.getString(R.string.parent_col),ParseObject.createWithoutData
+                (resources.getString(R.string.play_table),like.getPlayListID()));
+        query.whereEqualTo(resources.getString(R.string.key_user),ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e==null){
+                    parseObjects.get(0).deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e==null)
+                                listener.onUnLiked(like);
+                            else
+                                listener.onUnLiked(null);
+                        }
+                    });
+                } else
+                    listener.onUnLiked(null);
+            }
+        });
+    }
+
     public void addLike(final Like like){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.play_table));
         query.getInBackground(like.getPlayListID(),new GetCallback<ParseObject>() {
@@ -413,11 +460,25 @@ public class CloudStorage {
         });
     }
 
-    public void deleteSong(Song song){
-
-    }
-
-    public void unLike(Like like){
-        
+    public void deleteSong(final Song song){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(
+                R.string.song_table));
+        query.getInBackground(song.getID(),new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e==null){
+                    parseObject.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e==null)
+                                listener.onSongDeleted(song);
+                            else
+                                listener.onSongDeleted(null);
+                        }
+                    });
+                } else
+                    listener.onSongDeleted(null);
+            }
+        });
     }
 }
