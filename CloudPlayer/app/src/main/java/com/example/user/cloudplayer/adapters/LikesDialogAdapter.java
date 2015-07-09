@@ -40,10 +40,10 @@ public class LikesDialogAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){ // inflates only when it is necessary.it is correct style of writing such as code.
-            view = View.inflate(context, R.layout.activity_profile_list_view_item,null);
+            view = View.inflate(context, R.layout.likes_dialog_list_view_item,null);
         }
 
-        TextView userName = (TextView)view.findViewById(R.id.activity_profile_name);
+        TextView userName = (TextView)view.findViewById(R.id.likes_dialog_list_item_name);
         userName.setText(likes.get(i).getUserName());
         view.setMinimumHeight(125);
 
