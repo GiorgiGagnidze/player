@@ -118,9 +118,10 @@ public class CloudStorage {
                     parseObject.deleteInBackground(new DeleteCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e == null)
+                            if (e == null) {
                                 listener.onPlayListDeleted(playList);
-                            else
+                                deleteChildren(playList);
+                            }else
                                 listener.onPlayListDeleted(null);
                         }
                     });
@@ -128,7 +129,10 @@ public class CloudStorage {
                     listener.onPlayListDeleted(null);
             }
         });
-        // kaskaduri ambebi
+    }
+
+    private void deleteChildren(final PlayList playList){
+
     }
 
     public void downloadUsersPlaylists(){
@@ -331,13 +335,13 @@ public class CloudStorage {
             @Override
             public void done(final ParseObject parseObject, ParseException e) {
                 if (e==null){
-                    int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
+                    final int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
                     parseObject.put(resources.getString(R.string.numlikes_col),numLikes-1);
                     parseObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e==null){
-                                unLikeHelper(like);
+                                unLikeHelper(like,numLikes,parseObject);
                             } else
                                 listener.onUnLiked(null);
                         }
@@ -348,10 +352,9 @@ public class CloudStorage {
         });
     }
 
-    private void unLikeHelper(final Like like){
+    private void unLikeHelper(final Like like,final int numLikes, final ParseObject object){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.like_table));
-        query.whereEqualTo(resources.getString(R.string.parent_col),ParseObject.createWithoutData
-                (resources.getString(R.string.play_table),like.getPlayListID()));
+        query.whereEqualTo(resources.getString(R.string.parent_col),object);
         query.whereEqualTo(resources.getString(R.string.key_user),ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -362,12 +365,18 @@ public class CloudStorage {
                         public void done(ParseException e) {
                             if (e==null)
                                 listener.onUnLiked(like);
-                            else
+                            else {
+                                object.put(resources.getString(R.string.numlikes_col), numLikes);
+                                object.saveEventually();
                                 listener.onUnLiked(null);
+                            }
                         }
                     });
-                } else
+                } else {
+                    object.put(resources.getString(R.string.numlikes_col), numLikes);
+                    object.saveEventually();
                     listener.onUnLiked(null);
+                }
             }
         });
     }
@@ -378,7 +387,7 @@ public class CloudStorage {
             @Override
             public void done(final ParseObject parseObject, ParseException e) {
                 if (e==null){
-                    int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
+                    final int numLikes =parseObject.getInt(resources.getString(R.string.numlikes_col));
                     parseObject.put(resources.getString(R.string.numlikes_col),numLikes+1);
                     parseObject.saveInBackground(new SaveCallback() {
                         @Override
@@ -396,8 +405,12 @@ public class CloudStorage {
                                     public void done(ParseException e) {
                                         if (e == null){
                                             listener.onLiked(new Like(like.getPlayListID(),name));
-                                        } else
+                                        } else {
+                                            parseObject.put(resources.getString(R.string.numlikes_col)
+                                                    ,numLikes);
+                                            parseObject.saveEventually(); 
                                             listener.onLiked(null);
+                                        }
                                     }
                                 });
                             } else
