@@ -15,6 +15,10 @@
     <string name="key_account">com.example.pro.cloudplayer.account</string>
     <string name="key_app">com.example.pro.cloudplayer</string>
     <string name="key_email">email</string>
+    <string name="key_song">song</string>
+    <string name="like_text"> people like this.</string>
+    <string name="key_for_int"> likeKey</string>
+    <string name="key_for_bool"> boolLikeKey</string>
     <string name="key_username">iuzgar</string>
     <string name="login_alert">Email or username is incorrect!</string>
     <string name="search_hint">search</string>

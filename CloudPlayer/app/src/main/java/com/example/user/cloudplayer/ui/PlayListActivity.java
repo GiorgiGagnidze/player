@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     private final String UNLIKED="Like";
     private PlayList playlist;
     private int isLiked;
-
+    private boolean checker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_playlist);
         playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
-        isLiked=-1;
+
         final ParseUser user=ParseUser.getCurrentUser();
         comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
@@ -56,7 +57,27 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         numLikes = (TextView) findViewById(R.id.num_likes);
         list = (ListView) findViewById(R.id.song_list);
         App.getCloudStorage().hasLiked(playlist.getID());
-        numLikes.setText(playlist.getNumLikes()+" people like this.");
+        if(savedInstanceState!=null){
+            isLiked=savedInstanceState.getInt(getResources().getString(R.string.key_for_int));
+            checker=savedInstanceState.getBoolean(getResources().getString(R.string.key_for_bool));
+
+
+        }else {
+            isLiked = -1;
+            checker = true;
+
+        }
+        if(isLiked!=-1) numLikes.setText(isLiked + getResources().getString(R.string.like_text));
+        else numLikes.setText(playlist.getNumLikes() + getResources().getString(R.string.like_text));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(a, PlayerActivity.class);
+                intent.putExtra(a.getResources().getString(R.string.key_song),
+                        currentPlayList.get(position));
+                startActivity(intent);
+            }
+        });
         numLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,11 +114,14 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             @Override
             public void onClick(View v) {
                 Like l = new Like(playlist.getID(), user.getString(getResources().getString(R.string.name_col)));
-                if(like.getText().toString().equals(UNLIKED)) {
+                if(checker) {
+                    if (like.getText().toString().equals(UNLIKED)) {
+                        App.getCloudStorage().addLike(l);
 
-                    App.getCloudStorage().addLike(l);
-                }else{
-                    App.getCloudStorage().unLike(l);
+                    } else {
+                        App.getCloudStorage().unLike(l);
+                    }
+                    checker=false;
                 }
                    //App.onLikeButtonClicked();
             }
@@ -107,6 +131,14 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         currentPlayList=new ArrayList<Song>();
         App.getCloudStorage().getSongs(playlist.getID());
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(getResources().getString(R.string.key_for_int),isLiked);
+        outState.putBoolean(getResources().getString(R.string.key_for_bool),checker);
+
+    }
+
 
     @Override
     public void onPlayListAdded(PlayList playList) {
@@ -115,7 +147,11 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
+        if(playlist==null){
 
+        }else if(playlist.getID().equals(this.playlist.getID())){
+            finish();
+        }
     }
 
     @Override
@@ -186,15 +222,19 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             else{
                 isLiked++;
             }
-            numLikes.setText(isLiked+" people like this.");
+            numLikes.setText(isLiked+getResources().getString(R.string.like_text));
             this.like.setText("Unlike");
         }
+        checker=true;
     }
 
     @Override
     public void onHasLiked(Boolean bool) {
         if(bool==true)  like.setText(LIKED);
         else if(bool==false)  like.setText(UNLIKED);
+        else if(bool==null){
+
+        }
     }
 
     @Override
@@ -212,10 +252,20 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             numLikes.setText(isLiked+" people like this.");
             this.like.setText("Like");
         }
+        checker=true;
     }
 
     @Override
     public void onSongDeleted(Song song) {
+        if(song==null){
 
+        }else{
+            if(currentPlayList.contains(song)){
+                currentPlayList.remove(song);
+                adapter.notifyDataSetChanged();
+            }
+
+
+        }
     }
 }
