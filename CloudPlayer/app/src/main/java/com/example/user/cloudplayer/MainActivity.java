@@ -91,6 +91,16 @@ public class MainActivity extends Activity implements NetworkEventListener {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String keyWord = editText.getText().toString();
+        if (keyWord.equals(""))
+            cloudStorage.getTopTen();
+        else
+            cloudStorage.getSearchResult(keyWord.toString());
+    }
+
     private void login(){
         SharedPreferences prefs = this.getSharedPreferences(
                 getResources().getString(R.string.key_app), Context.MODE_PRIVATE);
