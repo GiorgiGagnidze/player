@@ -81,8 +81,11 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                LikesDialogFragment dial=new LikesDialogFragment();
                 Bundle args = new Bundle();
                 args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
+                if(isLiked!=-1) args.putInt(a.getResources().getString(R.string.num_likes), isLiked );
+                else args.putInt(a.getResources().getString(R.string.num_likes), playlist.getNumLikes());
                 dial.setArguments(args);
                 dial.show(getFragmentManager(), getResources().getString(R.string.tag));
+
             }
         });
         comment.setOnClickListener(new View.OnClickListener() {
@@ -114,11 +117,13 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 if(checker) {
                     if (like.getText().toString().equals(getResources().getString(R.string.like))) {
                         App.getCloudStorage().addLike(l);
+                        checker=false;
 
-                    } else {
+                    } else if (like.getText().toString().equals(getResources().getString(R.string.unlike))) {
                         App.getCloudStorage().unLike(l);
+                        checker=false;
                     }
-                    checker=false;
+
                 }
             }
         });
@@ -131,7 +136,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         super.onSaveInstanceState(outState);
         outState.putInt(getResources().getString(R.string.key_for_int),isLiked);
         outState.putBoolean(getResources().getString(R.string.key_for_bool),checker);
-
     }
 
 
