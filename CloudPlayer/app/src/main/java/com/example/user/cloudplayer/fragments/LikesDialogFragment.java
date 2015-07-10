@@ -25,6 +25,7 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
     private App app;
     private ArrayList<Like> currentLikes;
     private LikesDialogAdapter adapter;
+    private int numLikes;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
         list = (ListView)d.findViewById(R.id.dialog_likes_list_view);
         Bundle mArgs = getArguments();
         playListID = mArgs.getString(getResources().getString(R.string.key_playlistID));
+        numLikes = mArgs.getInt(getResources().getString(R.string.num_likes));
         app = (App)getActivity().getApplication();
         app.addListener(this);
         if(savedInstanceState == null){
@@ -65,7 +67,9 @@ public class LikesDialogFragment extends DialogFragment implements NetworkEventL
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
         if(likes != null){
-            currentLikes = likes;
+            for(int i = 0; i < numLikes; i++){
+                currentLikes.add(likes.get(i));
+            }
             adapter = new LikesDialogAdapter(getActivity(),currentLikes);
             list.setAdapter(adapter);
         }
