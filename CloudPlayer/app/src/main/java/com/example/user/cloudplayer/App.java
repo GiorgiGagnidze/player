@@ -7,6 +7,7 @@ import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.model.Song;
 import com.example.user.cloudplayer.storage.CloudStorage;
+import com.example.user.cloudplayer.transport.Music;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 public class App extends Application implements NetworkEventListener {
     private HashSet<NetworkEventListener> listeners;
     private static CloudStorage cloudStorage;
+    private Music music;
 
     public static CloudStorage getCloudStorage(){
         return cloudStorage;
@@ -32,6 +34,10 @@ public class App extends Application implements NetworkEventListener {
             listeners.remove(listener);
     }
 
+    public Music getMusic() {
+        return music;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,6 +47,7 @@ public class App extends Application implements NetworkEventListener {
     private void initApp() {
         listeners = new HashSet<NetworkEventListener>();
         cloudStorage = new CloudStorage();
+        music = new Music();
         cloudStorage.setListener(this);
         Parse.initialize(this, getResources().getString(R.string.application_id),
                 getResources().getString(R.string.client_key));

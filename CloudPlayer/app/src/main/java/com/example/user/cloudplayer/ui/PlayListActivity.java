@@ -23,6 +23,7 @@ import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.model.Song;
+import com.example.user.cloudplayer.transport.Music;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 import com.parse.ParseUser;
 
@@ -62,6 +63,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             checker = true;
 
         }
+        app = (App)getApplication();
+        final Music music=app.getMusic();
         if(isLiked!=-1) numLikes.setText(isLiked + getResources().getString(R.string.like_text));
         else numLikes.setText(playlist.getNumLikes() + getResources().getString(R.string.like_text));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,6 +73,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 Intent intent = new Intent(a, PlayerActivity.class);
                 intent.putExtra(a.getResources().getString(R.string.key_song),
                         currentPlayList.get(position));
+                music.setPlaylist(currentPlayList,position);
                 startActivity(intent);
             }
         });
@@ -118,10 +122,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                     }
                     checker=false;
                 }
-                   //App.onLikeButtonClicked();
             }
         });
-        app = (App)getApplication();
         app.addListener(this);
         currentPlayList=new ArrayList<Song>();
         App.getCloudStorage().getSongs(playlist.getID());

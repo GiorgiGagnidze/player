@@ -2,6 +2,11 @@ package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
@@ -10,13 +15,21 @@ import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.model.Song;
+import com.example.user.cloudplayer.transport.Music;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
+import com.example.user.cloudplayer.transport.PlayerListener;
 
 import java.util.ArrayList;
 
-public class PlayerActivity extends Activity implements NetworkEventListener {
+public class PlayerActivity extends Activity implements NetworkEventListener,PlayerListener {
 
     private App app;
+    private Music music;
+    private Song song;
+    private static final int SECOND = 1000;
+    private SeekBar seekBar;
+    private Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +37,52 @@ public class PlayerActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_player);
         app = (App)getApplication();
         app.addListener(this);
+        music = app.getMusic();
+        music.setListener(this);
+        seekBar = (SeekBar)findViewById(R.id.seekBar);
+        seekBar.setMax(music.getDuration());
+        PlayerActivity.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                int mCurrentPosition = music.getCurrentPosition() / SECOND;
+                seekBar.setProgress(mCurrentPosition);
+                mHandler.postDelayed(this, SECOND);
+            }
+        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(b){
+                    music.seekTo(i*SECOND);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        music.start();
+        ImageButton previous = (ImageButton)findViewById(R.id.activity_player_previous);
+        ImageButton next = (ImageButton)findViewById(R.id.activity_player_next);
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -140,6 +199,11 @@ public class PlayerActivity extends Activity implements NetworkEventListener {
     protected void onDestroy() {
         super.onDestroy();
         app.removeListener(this);
+        music.setListener(null);
     }
 
+    @Override
+    public void onSongChanged(Song song) {
+        this.song = song;
+    }
 }
