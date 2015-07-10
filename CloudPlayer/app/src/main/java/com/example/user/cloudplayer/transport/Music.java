@@ -59,7 +59,7 @@ public class Music {
         if (mediaPlayer != null)
             mediaPlayer.stop();
         mediaPlayer = new MediaPlayer();
-        setLooping(false);
+        setLooping(looping);
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -77,9 +77,14 @@ public class Music {
     }
 
     public void setPlaylist(ArrayList<Song> songs, int index){
+        boolean toSet = true;
+        if (this.songs != null && this.songs.get(this.index).getID().equals(songs.get(index).getID())) {
+            toSet = false;
+        }
         this.index = index;
         this.songs = Collections.synchronizedList(songs);
-        setSource();
+        if (toSet)
+            setSource();
     }
 
     public int getDuration(){
@@ -104,7 +109,7 @@ public class Music {
     }
 
     public void onSongDeleted(Song song){
-        if (song.getPlayListID().equals(songs.get(index).getPlayListID())){
+        if (songs!= null && song.getPlayListID().equals(songs.get(index).getPlayListID())){
             if (song.getID().equals(songs.get(index).getID())){
                 mediaPlayer.stop();
                 songs.remove(index);
@@ -122,7 +127,7 @@ public class Music {
     }
 
     public void onSongAdded(Song song){
-        if (song.getPlayListID().equals(songs.get(index).getPlayListID())){
+        if (songs!= null && song.getPlayListID().equals(songs.get(index).getPlayListID())){
             songs.add(song);
         }
     }
