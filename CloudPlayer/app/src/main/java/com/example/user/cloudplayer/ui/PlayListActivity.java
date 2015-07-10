@@ -47,7 +47,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_playlist);
         playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
-
         final ParseUser user=ParseUser.getCurrentUser();
         Button comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
@@ -61,12 +60,11 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         }else {
             isLiked = -1;
             checker = true;
-
         }
         app = (App)getApplication();
         final Music music=app.getMusic();
-        if(isLiked!=-1) numLikes.setText(isLiked + getResources().getString(R.string.like_text));
-        else numLikes.setText(playlist.getNumLikes() + getResources().getString(R.string.like_text));
+        if(isLiked!=-1) numLikes.setText(isLiked + " "+getResources().getString(R.string.like_text));
+        else numLikes.setText(playlist.getNumLikes() +" "+ getResources().getString(R.string.like_text));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -242,7 +240,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             else{
                 isLiked++;
             }
-            numLikes.setText(isLiked+getResources().getString(R.string.like_text));
+            numLikes.setText(isLiked+" "+getResources().getString(R.string.like_text));
             this.like.setText(getResources().getString(R.string.unlike));
         }
         checker=true;
@@ -269,7 +267,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             }else{
                 isLiked--;
             }
-            numLikes.setText(isLiked+getResources().getString(R.string.like_text));
+            numLikes.setText(isLiked+" "+getResources().getString(R.string.like_text));
             this.like.setText(getResources().getString(R.string.like));
         }
         checker=true;
