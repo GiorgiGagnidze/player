@@ -230,4 +230,10 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
         outState.putInt(click_key, clickedPos);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.getCloudStorage().downloadUsersPlaylists();
+    }
+
 }
