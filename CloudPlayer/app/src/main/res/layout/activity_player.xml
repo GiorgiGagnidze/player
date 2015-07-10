@@ -19,6 +19,7 @@
             android:layout_marginLeft="@dimen/custom_player_margin"/>
 
         <TextView
+            android:id="@+id/song_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"

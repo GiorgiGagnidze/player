@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
@@ -29,8 +30,7 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     private static final int SECOND = 1000;
     private SeekBar seekBar;
     private Handler mHandler = new Handler();
-
-
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,9 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         music.setListener(this);
         seekBar = (SeekBar)findViewById(R.id.seekBar);
         seekBar.setMax(music.getDuration()/SECOND);
+        name = (TextView)findViewById(R.id.song_name);
+        song = (Song)getIntent().getExtras().get(getResources().getString(R.string.key_song));
+        name.setText(song.getName());
         PlayerActivity.this.runOnUiThread(new Runnable() {
 
             @Override
@@ -206,6 +209,6 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     @Override
     public void onSongChanged(Song song) {
         this.song = song;
-
+        name.setText(song.getName());
     }
 }

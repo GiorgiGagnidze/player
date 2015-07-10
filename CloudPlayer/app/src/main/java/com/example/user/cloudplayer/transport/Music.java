@@ -15,21 +15,11 @@ public class Music {
     public boolean looping = false;
 
     public Music(){
-        mediaPlayer = new MediaPlayer();
-        setLooping(false);
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (!looping){
-                    moveForward();
-                }
-            }
-        });
+
     }
 
     public void moveForward(){
         mediaPlayer.stop();
-        mediaPlayer = new MediaPlayer();
         index++;
         if (index == songs.size())
             index = 0;
@@ -41,7 +31,6 @@ public class Music {
 
     public void moveBackward(){
         mediaPlayer.stop();
-        mediaPlayer = new MediaPlayer();
         index--;
         if (index == -1)
             index = songs.size()-1;
@@ -64,6 +53,18 @@ public class Music {
     }
 
     private void setSource(){
+        if (mediaPlayer != null)
+            mediaPlayer.stop();
+        mediaPlayer = new MediaPlayer();
+        setLooping(false);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (!looping){
+                    moveForward();
+                }
+            }
+        });
         try {
             mediaPlayer.setDataSource(songs.get(index).getUrl());
             mediaPlayer.prepare();
