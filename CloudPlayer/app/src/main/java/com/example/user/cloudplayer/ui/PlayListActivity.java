@@ -71,6 +71,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
                 Intent intent = new Intent(a, PlayerActivity.class);
                 intent.putExtra(a.getResources().getString(R.string.key_song),
                         currentPlayList.get(position));
+                intent.putExtra(a.getResources().getString(R.string.key_user),
+                        playlist.getUserID());
                 music.setPlaylist(currentPlayList,position);
                 startActivity(intent);
             }
