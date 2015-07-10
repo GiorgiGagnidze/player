@@ -12,11 +12,7 @@ public class Music {
     private ArrayList<Song> songs;
     private int index;
     private MediaPlayer mediaPlayer;
-    public boolean looping = false;
-
-    public Music(){
-
-    }
+    private boolean looping = false;
 
     public void moveForward(){
         mediaPlayer.stop();
@@ -50,6 +46,10 @@ public class Music {
 
     public void pause(){
         mediaPlayer.pause();
+    }
+
+    public boolean isPlaying(){
+        return mediaPlayer.isPlaying();
     }
 
     private void setSource(){
@@ -97,5 +97,9 @@ public class Music {
             mediaPlayer.setLooping(true);
         else
             mediaPlayer.setLooping(false);
+    }
+
+    public boolean getLooping(){
+        return looping;
     }
 }
