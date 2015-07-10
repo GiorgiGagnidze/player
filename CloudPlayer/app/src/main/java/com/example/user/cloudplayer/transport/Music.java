@@ -112,7 +112,7 @@ public class Music {
         if (songs!= null && song.getPlayListID().equals(songs.get(index).getPlayListID())){
             if (song.getID().equals(songs.get(index).getID())){
                 mediaPlayer.stop();
-                songs.remove(index);
+                songs =null;
             } else {
                 synchronized (object) {
                     for (int i = 0; i < songs.size(); i++) {
