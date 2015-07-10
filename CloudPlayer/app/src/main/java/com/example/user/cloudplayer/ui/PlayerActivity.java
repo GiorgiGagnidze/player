@@ -75,8 +75,13 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         music.start();
         ImageButton previous = (ImageButton)findViewById(R.id.activity_player_previous);
         ImageButton next = (ImageButton)findViewById(R.id.activity_player_next);
-        ImageButton stopResume = (ImageButton)findViewById(R.id.activity_player_stop_resume);
+        final ImageButton stopResume = (ImageButton)findViewById(R.id.activity_player_stop_resume);
         final ImageButton loop = (ImageButton)findViewById(R.id.activity_player_loop);
+        if(music.getLooping()){
+            loop.setBackgroundResource(R.drawable.round_button_1);
+        } else {
+            loop.setBackgroundResource(R.drawable.round_button);
+        }
 
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,20 +100,26 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         stopResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(music.isPlaying()){
+                    music.pause();
+                    stopResume.setImageResource(R.drawable.ic_media_play);
+                } else {
+                    music.start();
+                    stopResume.setImageResource(R.drawable.ic_media_pause);
+                }
             }
         });
 
         loop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(true){
+                if(music.getLooping()){
                     music.setLooping(false);
-                    loop.setBackgroundResource(R.drawable.round_button_1);
+                    loop.setBackgroundResource(R.drawable.round_button);
                 } else {
-                    //music.setLooping();
+                    music.setLooping(true);
+                    loop.setBackgroundResource(R.drawable.round_button_1);
                 }
-               // music.setLooping();
             }
         });
 
