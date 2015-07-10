@@ -28,6 +28,8 @@ public class Music {
     }
 
     public void moveForward(){
+        mediaPlayer.stop();
+        mediaPlayer = new MediaPlayer();
         index++;
         if (index == songs.size())
             index = 0;
@@ -36,6 +38,8 @@ public class Music {
     }
 
     public void moveBackward(){
+        mediaPlayer.stop();
+        mediaPlayer = new MediaPlayer();
         index--;
         if (index == -1)
             index = songs.size()-1;

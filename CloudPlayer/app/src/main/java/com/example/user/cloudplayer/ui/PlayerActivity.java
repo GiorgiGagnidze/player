@@ -40,7 +40,7 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         music = app.getMusic();
         music.setListener(this);
         seekBar = (SeekBar)findViewById(R.id.seekBar);
-        seekBar.setMax(music.getDuration());
+        seekBar.setMax(music.getDuration()/SECOND);
         PlayerActivity.this.runOnUiThread(new Runnable() {
 
             @Override
@@ -74,13 +74,13 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                music.moveBackward();
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                music.moveForward();
             }
         });
     }
