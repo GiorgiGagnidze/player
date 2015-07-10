@@ -6,15 +6,18 @@ import com.example.user.cloudplayer.model.Song;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Music {
     private PlayerListener listener;
-    private ArrayList<Song> songs;
+    private List<Song> songs;
     private int index;
     private MediaPlayer mediaPlayer;
     private boolean looping = false;
+    private final Object object = new Object();
 
-    public void moveForward(){
+    public synchronized void moveForward(){
         mediaPlayer.stop();
         index++;
         if (index == songs.size())
@@ -25,7 +28,7 @@ public class Music {
         start();
     }
 
-    public void moveBackward(){
+    public synchronized void moveBackward(){
         mediaPlayer.stop();
         index--;
         if (index == -1)
@@ -75,7 +78,7 @@ public class Music {
 
     public void setPlaylist(ArrayList<Song> songs, int index){
         this.index = index;
-        this.songs = songs;
+        this.songs = Collections.synchronizedList(songs);
         setSource();
     }
 
@@ -93,13 +96,34 @@ public class Music {
 
     public void setLooping(boolean looping){
         this.looping = looping;
-        if (looping)
-            mediaPlayer.setLooping(true);
-        else
-            mediaPlayer.setLooping(false);
+        mediaPlayer.setLooping(looping);
     }
 
     public boolean getLooping(){
         return looping;
+    }
+
+    public void onSongDeleted(Song song){
+        if (song.getPlayListID().equals(songs.get(index).getPlayListID())){
+            if (song.getID().equals(songs.get(index).getID())){
+                mediaPlayer.stop();
+                songs.remove(index);
+            } else {
+                synchronized (object) {
+                    for (int i = 0; i < songs.size(); i++) {
+                        if (song.getID().equals(songs.get(i).getID())) {
+                            songs.remove(index);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void onSongAdded(Song song){
+        if (song.getPlayListID().equals(songs.get(index).getPlayListID())){
+            songs.add(song);
+        }
     }
 }

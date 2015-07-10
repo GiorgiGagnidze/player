@@ -108,6 +108,8 @@ public class App extends Application implements NetworkEventListener {
 
     @Override
     public void onSongAdded(Song song) {
+        if (song != null)
+            music.onSongAdded(song);
         for (NetworkEventListener listener: listeners)
             listener.onSongAdded(song);
     }
@@ -138,6 +140,8 @@ public class App extends Application implements NetworkEventListener {
 
     @Override
     public void onSongDeleted(Song song) {
+        if (song != null)
+            music.onSongDeleted(song);
         for (NetworkEventListener listener: listeners)
             listener.onSongDeleted(song);
     }
