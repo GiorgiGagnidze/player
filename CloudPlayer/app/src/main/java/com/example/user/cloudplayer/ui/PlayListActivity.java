@@ -78,11 +78,9 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         numLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               LikesDialogFragment dial=new LikesDialogFragment();
+                LikesDialogFragment dial=new LikesDialogFragment();
                 Bundle args = new Bundle();
                 args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
-                if(isLiked!=-1) args.putInt(a.getResources().getString(R.string.num_likes), isLiked );
-                else args.putInt(a.getResources().getString(R.string.num_likes), playlist.getNumLikes());
                 dial.setArguments(args);
                 dial.show(getFragmentManager(), getResources().getString(R.string.tag));
 
