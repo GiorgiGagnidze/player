@@ -102,10 +102,10 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
             public void onClick(View view) {
                 if(music.isPlaying()){
                     music.pause();
-                    stopResume.setImageResource(R.drawable.ic_media_play);
+                    stopResume.setImageResource(android.R.drawable.ic_media_play);
                 } else {
                     music.start();
-                    stopResume.setImageResource(R.drawable.ic_media_pause);
+                    stopResume.setImageResource(android.R.drawable.ic_media_pause);
                 }
             }
         });
