@@ -68,4 +68,5 @@
     <string name="unlike_alert">PlayList has not been unliked, check internet connection!</string>
     <string name="song_delete_alert">Song has not been deleted, check internet connection!</string>
     <string name="enter_correct_song">Enter Correct Song Name</string>
+    <string name="date_col">createdAt</string>
 </resources>

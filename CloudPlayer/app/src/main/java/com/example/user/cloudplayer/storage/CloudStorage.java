@@ -198,6 +198,7 @@ public class CloudStorage {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(resources.getString(R.string.
                 comment_table));
         query.whereEqualTo(resources.getString(R.string.parent_col),parseObject);
+        query.orderByAscending(resources.getString(R.string.date_col));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
