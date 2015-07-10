@@ -33,6 +33,8 @@ public class Music {
         index++;
         if (index == songs.size())
             index = 0;
+        if (listener != null)
+            listener.onSongChanged(songs.get(index));
         setSource();
         start();
     }
@@ -43,6 +45,8 @@ public class Music {
         index--;
         if (index == -1)
             index = songs.size()-1;
+        if (listener != null)
+            listener.onSongChanged(songs.get(index));
         setSource();
         start();
     }

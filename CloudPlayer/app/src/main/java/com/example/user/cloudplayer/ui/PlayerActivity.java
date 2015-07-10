@@ -31,6 +31,7 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     private Handler mHandler = new Handler();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,5 +206,6 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     @Override
     public void onSongChanged(Song song) {
         this.song = song;
+
     }
 }
