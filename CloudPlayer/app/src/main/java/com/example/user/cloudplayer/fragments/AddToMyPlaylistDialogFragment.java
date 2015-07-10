@@ -49,9 +49,6 @@ public class AddToMyPlaylistDialogFragment extends DialogFragment implements Net
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Irakli","Shemovida");
-                Log.i("Irakli",song.getName());
-                Log.i("Irakli",playlist.get(position).getID());
                 App.getCloudStorage().addSongFromOtherUser(song,playlist.get(position).getID());
             }
         });

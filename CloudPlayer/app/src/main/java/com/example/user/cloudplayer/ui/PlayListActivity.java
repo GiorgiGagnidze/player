@@ -285,14 +285,19 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongDeleted(Song song) {
+
         if(song==null){
             Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
                     Toast.LENGTH_SHORT).show();
         }else{
-            if(currentPlayList.contains(song)){
-                currentPlayList.remove(song);
-                adapter.notifyDataSetChanged();
-            }
+
+            App.getCloudStorage().getSongs(playlist.getID());
+           // if(currentPlayList.contains(song)){
+
+             //   currentPlayList.remove(song);
+
+            //}
+            //adapter.notifyDataSetChanged();
         }
     }
 }

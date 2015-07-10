@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
+import com.example.user.cloudplayer.fragments.AddToMyPlaylistDialogFragment;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -19,6 +20,7 @@ import com.example.user.cloudplayer.model.Song;
 import com.example.user.cloudplayer.transport.Music;
 import com.example.user.cloudplayer.transport.NetworkEventListener;
 import com.example.user.cloudplayer.transport.PlayerListener;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -31,12 +33,14 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     private SeekBar seekBar;
     private Handler mHandler = new Handler();
     private TextView name;
-
+    private boolean isMe=false;
+    private ImageButton button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         app = (App)getApplication();
+        final Activity a=this;
         app.addListener(this);
         music = app.getMusic();
         music.setListener(this);
@@ -45,6 +49,30 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         name = (TextView)findViewById(R.id.song_name);
         song = (Song)getIntent().getExtras().get(getResources().getString(R.string.key_song));
         name.setText(song.getName());
+        button=(ImageButton)findViewById(R.id.activity_player_delete_add);
+        final ParseUser user= ParseUser.getCurrentUser();
+        String userId=getIntent().getExtras().getString(getResources().getString(R.string.key_user));
+        if(userId.equals(user.getObjectId())){
+            isMe=true;
+            button.setImageResource(android.R.drawable.ic_delete);
+        }else{
+            button.setImageResource(android.R.drawable.ic_input_add);
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isMe){
+                    App.getCloudStorage().deleteSong(song);
+                }else{
+                    AddToMyPlaylistDialogFragment dial=new AddToMyPlaylistDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString(a.getResources().getString(R.string.key_user), user.getObjectId());
+                    args.putSerializable(a.getResources().getString(R.string.key_song),song);
+                    dial.setArguments(args);
+                    dial.show(getFragmentManager(), getResources().getString(R.string.tag));
+                }
+            }
+        });
         PlayerActivity.this.runOnUiThread(new Runnable() {
 
             @Override
@@ -232,7 +260,9 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
             Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
                     Toast.LENGTH_SHORT).show();
         } else {
-            // tavis pasuxi aq, shemowmeba da gatishva
+            if(song.getID().equals(this.song.getID())){
+                finish();
+            }
         }
     }
 
