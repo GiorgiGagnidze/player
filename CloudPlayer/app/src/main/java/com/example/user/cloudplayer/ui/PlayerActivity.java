@@ -75,6 +75,9 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         music.start();
         ImageButton previous = (ImageButton)findViewById(R.id.activity_player_previous);
         ImageButton next = (ImageButton)findViewById(R.id.activity_player_next);
+        ImageButton stopResume = (ImageButton)findViewById(R.id.activity_player_stop_resume);
+        final ImageButton loop = (ImageButton)findViewById(R.id.activity_player_loop);
+
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +90,29 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
                 music.moveForward();
             }
         });
+
+
+        stopResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        loop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(true){
+                    music.setLooping(false);
+                    loop.setBackgroundResource(R.drawable.round_button_1);
+                } else {
+                    //music.setLooping();
+                }
+               // music.setLooping();
+            }
+        });
+
+
     }
 
     @Override
