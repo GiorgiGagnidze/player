@@ -40,6 +40,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     private int isLiked;
     private boolean checker;
     private App app;
+    private boolean songAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         setContentView(R.layout.activity_playlist);
         playlist=(PlayList)getIntent().getExtras().get(this.getResources().getString(R.string.key_playlistID));
         final Activity a = this;
+        songAdd=true;
         final ParseUser user=ParseUser.getCurrentUser();
         Button comment = (Button) findViewById(R.id.comment);
         like = (Button) findViewById(R.id.like_button);
@@ -99,11 +101,13 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
         addSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddSongDialogFragment addSong = new AddSongDialogFragment();
-                Bundle args = new Bundle();
-                args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
-                addSong.setArguments(args);
-                addSong.show(getFragmentManager(), getResources().getString(R.string.tag));
+                if(songAdd) {
+                    AddSongDialogFragment addSong = new AddSongDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString(a.getResources().getString(R.string.key_playlistID), playlist.getID());
+                    addSong.setArguments(args);
+                    addSong.show(getFragmentManager(), getResources().getString(R.string.tag));
+                }else Toast.makeText(a.getApplicationContext(),getResources().getString(R.string.add_song_twice),Toast.LENGTH_SHORT);
             }
         });
 
@@ -209,8 +213,10 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     public void onSongAdded(Song song) {
         if(song!=null){
             if (playlist.getID().equals(song.getPlayListID())) {
+                Log.i("Irakli",Integer.toString(currentPlayList.size()));
                 currentPlayList.add(song);
                 adapter.notifyDataSetChanged();
+                Log.i("Irakli",Integer.toString(currentPlayList.size()));
             }
         } else {
             Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
@@ -220,6 +226,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongsDownloaded(ArrayList<Song> songs) {
+
         if(songs==null){
             Toast.makeText(this,getResources().getString(R.string.songs_download_alert), Toast.LENGTH_LONG)
                     .show();
@@ -230,6 +237,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
+        Log.i("irakli","aqaa");
     }
 
     @Override
