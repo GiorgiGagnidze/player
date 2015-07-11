@@ -30,6 +30,7 @@ import java.util.List;
 public class CloudStorage {
     private NetworkEventListener listener;
     private Resources resources;
+    private static final int MAX_SIZE_BYTES= 10485750;
 
     public void setListener(NetworkEventListener listener) {
         this.listener = listener;
@@ -301,31 +302,34 @@ public class CloudStorage {
     public void addSong(String path,final String playlistID,final String name){
         byte[] byteArray = getSongBytes(path);
         final String music = "music";
-        final ParseFile file = new ParseFile(music+name.substring(name.lastIndexOf(".")),byteArray);
-        file.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e==null){
-                    final ParseObject object = new ParseObject(resources.getString(R.string.song_table));
-                    object.put(resources.getString(R.string.parent_col),ParseObject.createWithoutData
-                            (resources.getString(R.string.play_table),playlistID));
-                    object.put(resources.getString(R.string.name_col),name);
-                    object.put(resources.getString(R.string.file_col),file);
-                    object.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e==null){
-                                listener.onSongAdded(new Song(name,object.getObjectId(),playlistID,
-                                        file.getUrl()));
-                            } else
-                                listener.onSongAdded(null);
-                        }
-                    });
-                } else
-                    listener.onSongAdded(null);
-            }
-        });
-
+        if (byteArray.length < MAX_SIZE_BYTES) {
+            final ParseFile file = new ParseFile(music + name.substring(name.lastIndexOf(".")), byteArray);
+            file.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        final ParseObject object = new ParseObject(resources.getString(R.string.song_table));
+                        object.put(resources.getString(R.string.parent_col), ParseObject.createWithoutData
+                                (resources.getString(R.string.play_table), playlistID));
+                        object.put(resources.getString(R.string.name_col), name);
+                        object.put(resources.getString(R.string.file_col), file);
+                        object.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    listener.onSongAdded(new Song(name, object.getObjectId(), playlistID,
+                                            file.getUrl()));
+                                } else
+                                    listener.onSongAdded(null);
+                            }
+                        });
+                    } else
+                        listener.onSongAdded(null);
+                }
+            });
+        } else {
+            
+        }
     }
 
     private byte[] getSongBytes(String path){

@@ -82,7 +82,7 @@ public class Music {
             toSet = false;
         }
         this.index = index;
-        this.songs = Collections.synchronizedList(songs);
+        this.songs = Collections.synchronizedList(new ArrayList<Song>(songs));
         if (toSet)
             setSource();
     }

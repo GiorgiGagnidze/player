@@ -1,6 +1,7 @@
 package com.example.user.cloudplayer;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
