@@ -5,7 +5,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/add_song_text_view"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/enter_song"
         android:textSize="@dimen/add_shrift_size"/>
