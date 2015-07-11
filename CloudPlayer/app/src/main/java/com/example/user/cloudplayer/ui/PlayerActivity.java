@@ -167,8 +167,6 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         if(playList == null) {
             Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
                     .show();
-        } else {
-            // tu es simgera am playlistshia finish()
         }
     }
 
@@ -225,8 +223,6 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         if (song == null){
             Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
                     .show();
-        } else {
-            // aq sheidzleba dachirdes shemdeg simgerad gachitva damatebuli simgeris
         }
     }
 

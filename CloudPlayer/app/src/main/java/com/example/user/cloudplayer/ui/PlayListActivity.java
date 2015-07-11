@@ -256,7 +256,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
             like.setText(getResources().getString(R.string.unlike));
         else
             like.setText(getResources().getString(R.string.like));
-        // tu nullia ra xdeba, ra knopka gamovides
     }
 
     @Override
