@@ -145,82 +145,46 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onPlayListAdded(PlayList playList) {
-        if(playList == null) {
-            Toast.makeText(this,getResources().getString(R.string.on_playList_added), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-        if(playlist==null){
-            Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
-                    .show();
-        }else if(playlist.getID().equals(this.playlist.getID())){
+        if(playList!= null && playlist.getID().equals(this.playlist.getID())){
             finish();
         }
     }
 
     @Override
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
-        if(playLists == null) {
-            Toast.makeText(this,getResources().getString(R.string.on_playLists_downloaded), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onCommentsDownloaded(ArrayList<Comment> comments) {
-        if(comments == null) {
-            Toast.makeText(this,getResources().getString(R.string.on_comments_downloaded), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onLikesDownloaded(ArrayList<Like> likes) {
-        if(likes == null) {
-            Toast.makeText(this,getResources().getString(R.string.on_likes_downloaded), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onCommentAdded(Comment comment) {
-        if(comment == null){
-            Toast.makeText(this,getResources().getString(R.string.on_comment_added), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
-        if(playLists == null){
-            Toast.makeText(this,getResources().getString(R.string.search_alert), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
-        if(playLists == null) {
-            Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
-                    .show();
-        }
     }
 
     @Override
     public void onSongAdded(Song song) {
         if(song!=null){
             if (playlist.getID().equals(song.getPlayListID())) {
-                Log.i("Irakli",Integer.toString(currentPlayList.size()));
                 currentPlayList.add(song);
                 adapter.notifyDataSetChanged();
-                Log.i("Irakli",Integer.toString(currentPlayList.size()));
             }
-        } else {
-            Toast.makeText(this,getResources().getString(R.string.song_add_alert), Toast.LENGTH_LONG)
-                    .show();
         }
     }
 
@@ -228,8 +192,6 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
     public void onSongsDownloaded(ArrayList<Song> songs) {
 
         if(songs==null){
-            Toast.makeText(this,getResources().getString(R.string.songs_download_alert), Toast.LENGTH_LONG)
-                    .show();
             currentPlayList=new ArrayList<Song>();
         }else{
             currentPlayList=songs;
@@ -237,15 +199,11 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
         adapter=new SongAdapter(this,currentPlayList);
         list.setAdapter(adapter);
-        Log.i("irakli","aqaa");
     }
 
     @Override
     public void onLiked(Like like) {
-        if(like==null){
-            Toast.makeText(this,getResources().getString(R.string.like_alert), Toast.LENGTH_LONG)
-                    .show();
-        }else{
+        if(like!=null){
             if(isLiked==-1){
                 isLiked=playlist.getNumLikes()+1;
             }
@@ -260,7 +218,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onHasLiked(Boolean bool) {
-        if(bool)
+        if(bool != null && bool)
             like.setText(getResources().getString(R.string.unlike));
         else
             like.setText(getResources().getString(R.string.like));
@@ -268,11 +226,7 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onUnLiked(Like like) {
-        if(like==null){
-            Toast.makeText(getApplicationContext(),getResources().getString(R.string.unlike_alert),
-                    Toast.LENGTH_SHORT).show();
-        }
-        else{
+        if(like!=null){
             if(isLiked==-1){
                 isLiked=playlist.getNumLikes()-1;
             }else{
@@ -292,19 +246,8 @@ public class PlayListActivity extends Activity implements NetworkEventListener {
 
     @Override
     public void onSongDeleted(Song song) {
-
-        if(song==null){
-            Toast.makeText(getApplicationContext(),getResources().getString(R.string.song_delete_alert),
-                    Toast.LENGTH_SHORT).show();
-        }else{
-
+        if(song!=null){
             App.getCloudStorage().getSongs(playlist.getID());
-           // if(currentPlayList.contains(song)){
-
-             //   currentPlayList.remove(song);
-
-            //}
-            //adapter.notifyDataSetChanged();
         }
     }
 }

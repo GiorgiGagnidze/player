@@ -63,7 +63,7 @@
     <string name="like">LIKE</string>
     <string name="see">Details</string>
     <string name="enter_song">Enter song name</string>
-    <string name="song_add_alert">Song has not been added, check internet connection!</string>
+    <string name="song_add_alert">Song has not been added. Song must be maximum 10 mb, check internet connection!</string>
     <string name="songs_download_alert">Songs has not been downloaded, check internet connection!</string>
     <string name="like_alert">PlayList has not been liked, check internet connection!</string>
     <string name="unlike">Unlike</string>

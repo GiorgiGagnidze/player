@@ -328,7 +328,7 @@ public class CloudStorage {
                 }
             });
         } else {
-            
+            listener.onSongAdded(null);
         }
     }
 
