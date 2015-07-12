@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
@@ -34,7 +32,7 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     private Handler mHandler = new Handler();
     private TextView name;
     private boolean isMe=false;
-    private ImageButton button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +45,12 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
         seekBar = (SeekBar)findViewById(R.id.seekBar);
         seekBar.setMax(music.getDuration()/SECOND);
         name = (TextView)findViewById(R.id.song_name);
-        song = (Song)getIntent().getExtras().get(getResources().getString(R.string.key_song));
+        if (savedInstanceState == null)
+            song = (Song)getIntent().getExtras().get(getResources().getString(R.string.key_song));
+        else
+            song = (Song)savedInstanceState.getSerializable(getResources().getString(R.string.key_song));
         name.setText(song.getName());
-        button=(ImageButton)findViewById(R.id.activity_player_delete_add);
+        ImageButton button=(ImageButton)findViewById(R.id.activity_player_delete_add);
         final ParseUser user= ParseUser.getCurrentUser();
         String userId=getIntent().getExtras().getString(getResources().getString(R.string.key_user));
         if(userId.equals(user.getObjectId())){
@@ -226,5 +227,11 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     public void onSongChanged(Song song) {
         this.song = song;
         name.setText(song.getName());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(getResources().getString(R.string.key_song), song);
     }
 }
