@@ -3,6 +3,7 @@ package com.example.user.cloudplayer.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -40,7 +41,7 @@ public class CommentsActivity extends Activity implements NetworkEventListener {
         edit = (EditText)findViewById(R.id.activity_comments_edit_text);
         list = (ListView)findViewById(R.id.activity_comments_list_view);
         playListID = getIntent().getExtras().getString(getResources().getString(R.string.key_playlistID));
-        Button button = (Button)findViewById(R.id.activity_comments_button);
+        FloatingActionButton button = (FloatingActionButton)findViewById(R.id.activity_comments_button);
         app = (App)getApplication();
         app.addListener(this);
         if(savedInstanceState != null){ // if screen was rotated

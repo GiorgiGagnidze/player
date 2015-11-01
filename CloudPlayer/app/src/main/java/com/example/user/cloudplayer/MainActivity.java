@@ -4,21 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
+import com.example.user.cloudplayer.adapters.PlaylistRecyclerAdapter;
 import com.example.user.cloudplayer.fragments.LoginDialogFragment;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
@@ -32,34 +35,55 @@ import com.example.user.cloudplayer.ui.ProfileActivity;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity implements NetworkEventListener {
+public class MainActivity extends ActionBarActivity implements NetworkEventListener {
     private App app;
     private EditText editText;
-    private ListView listView;
-    private TextView textView;
+    private RecyclerView recyclerView;
     private ArrayList<PlayList> playLists;
     private CloudStorage cloudStorage;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private View.OnClickListener onClickListener;
+    private int mutedColor = R.attr.colorPrimary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_material);
         if (savedInstanceState == null)
             login();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
         app = (App)getApplication();
         final Activity activity = this;
         app.addListener(this);
-        listView = (ListView)findViewById(R.id.play_lists_list_view);
-        editText = (EditText)findViewById(R.id.search);
-        textView = (TextView)findViewById(R.id.description);
-        Button profile = (Button)findViewById(R.id.profile);
-        profile.setOnClickListener(new View.OnClickListener() {
+        recyclerView = (RecyclerView)findViewById(R.id.scrollableview);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.wall);
+
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, ProfileActivity.class);
-                startActivity(intent);
+            public void onGenerated(Palette palette) {
+                mutedColor = palette.getDarkMutedColor(R.attr.colorPrimary);
+                recyclerView.setBackgroundColor(palette.getMutedColor(R.attr.colorPrimary));
+                collapsingToolbar.setContentScrimColor(mutedColor);
             }
         });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int itemPosition = recyclerView.getChildAdapterPosition(view);
+                Intent intent = new Intent(activity, PlayListActivity.class);
+                intent.putExtra(activity.getResources().getString(R.string.key_playlistID),
+                        playLists.get(itemPosition));
+                startActivity(intent);
+            }
+        };
+        editText = (EditText)findViewById(R.id.search);
         cloudStorage = App.getCloudStorage();
         if (savedInstanceState == null)
             cloudStorage.getTopTen();
@@ -78,15 +102,6 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(activity, PlayListActivity.class);
-                intent.putExtra(activity.getResources().getString(R.string.key_playlistID),
-                        playLists.get(i));
-                startActivity(intent);
             }
         });
     }
@@ -127,7 +142,11 @@ public class MainActivity extends Activity implements NetworkEventListener {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == android.R.id.home) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_settings) {
             return true;
         }
 
@@ -179,14 +198,6 @@ public class MainActivity extends Activity implements NetworkEventListener {
         if(playList == null) {
             Toast.makeText(this,getResources().getString(R.string.on_playList_deleted), Toast.LENGTH_LONG)
                     .show();
-        } else {
-            ArrayList<String> names = new ArrayList<String>();
-            for (PlayList list : playLists)
-                if (!list.getID().equals(playList.getID()))
-                    names.add(list.getName());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, names);
-            listView.setAdapter(adapter);
         }
     }
 
@@ -225,7 +236,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
     @Override
     public void onSearchResultDownloaded(ArrayList<PlayList> playLists) {
         if (playLists != null) {
-            textView.setText(getResources().getString(R.string.search_title));
+            collapsingToolbar.setTitle(getResources().getString(R.string.search_title));
             fillListView(playLists);
         }else
             Toast.makeText(this,getResources().getString(R.string.search_alert), Toast.LENGTH_LONG)
@@ -235,7 +246,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
     @Override
     public void onTopTenDownloaded(ArrayList<PlayList> playLists) {
         if (playLists != null) {
-            textView.setText(getResources().getString(R.string.top_ten_title));
+            collapsingToolbar.setTitle(getResources().getString(R.string.top_ten_title));
             fillListView(playLists);
         }else
             Toast.makeText(this,getResources().getString(R.string.top_ten_alert), Toast.LENGTH_LONG)
@@ -294,12 +305,7 @@ public class MainActivity extends Activity implements NetworkEventListener {
 
     private void fillListView(ArrayList<PlayList> playLists){
         this.playLists = playLists;
-        ArrayList<String> names =new ArrayList<String>();
-        for (PlayList list: playLists)
-            names.add(list.getName());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,names);
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(new PlaylistRecyclerAdapter(this,playLists,onClickListener));
     }
 
 }

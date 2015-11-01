@@ -12,7 +12,6 @@ import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
 import com.example.user.cloudplayer.adapters.AddToPlaylistAdapter;
 import com.example.user.cloudplayer.adapters.LikesDialogAdapter;
-import com.example.user.cloudplayer.adapters.ProfileActivityAdapter;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -21,9 +20,7 @@ import com.example.user.cloudplayer.transport.NetworkEventListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by Irakli on 7/10/2015.
- */
+
 public class AddToMyPlaylistDialogFragment extends DialogFragment implements NetworkEventListener {
     private Song song;
     private String playListID;

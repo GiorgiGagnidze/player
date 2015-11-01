@@ -1,10 +1,14 @@
 package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -37,6 +41,16 @@ public class PlayerActivity extends Activity implements NetworkEventListener,Pla
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.player);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.images);
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int mutedColor = palette.getMutedColor(R.attr.colorPrimary);
+                linearLayout.setBackgroundColor(mutedColor);
+            }
+        });
         app = (App)getApplication();
         final Activity a=this;
         app.addListener(this);

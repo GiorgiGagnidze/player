@@ -1,17 +1,22 @@
 package com.example.user.cloudplayer.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.user.cloudplayer.App;
 import com.example.user.cloudplayer.R;
-import com.example.user.cloudplayer.adapters.ProfileActivityAdapter;
+import com.example.user.cloudplayer.adapters.ProfileRecyclerAdapter;
 import com.example.user.cloudplayer.model.Comment;
 import com.example.user.cloudplayer.model.Like;
 import com.example.user.cloudplayer.model.PlayList;
@@ -21,66 +26,69 @@ import com.example.user.cloudplayer.transport.NetworkEventListener;
 import java.util.ArrayList;
 
 
-public class ProfileActivity extends Activity implements NetworkEventListener{
-
-    private ListView list;
-    private ProfileActivityAdapter adapter;
+public class ProfileActivity extends ActionBarActivity implements NetworkEventListener{
+    private RecyclerView recyclerView;
+    private ProfileRecyclerAdapter recyclerAdapter;
     private EditText edit;
-    private int clickedPos = -1;
     private ArrayList<PlayList> currentPlayLists;
     private App app;
     private static final String edit_key = "EDIT";
-    private static final String click_key = "CLICKED_POS";
+    private int mutedColor = R.attr.colorPrimary;
+    private View.OnClickListener onClickListener;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private FloatingActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profile_material);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
-        Button addButton = (Button)findViewById(R.id.activity_profile_button_add);
-        Button deleteButton = (Button)findViewById(R.id.activity_profile_button_delete);
         edit = (EditText)findViewById(R.id.activity_profile_edit_text);
+        actionButton = (FloatingActionButton)findViewById(R.id.floating);
 
-        list = (ListView)findViewById(R.id.activity_profile_list_view);
+        recyclerView = (RecyclerView)findViewById(R.id.scrollableview);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.mixer);
+        final Activity activity = this;
+
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                mutedColor = palette.getDarkMutedColor(R.attr.colorPrimary);
+                recyclerView.setBackgroundColor(palette.getMutedColor(R.attr.colorPrimary));
+                collapsingToolbar.setContentScrimColor(mutedColor);
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int itemPosition = recyclerView.getChildAdapterPosition(view);
+                Intent intent = new Intent(activity, PlayListActivity.class);
+                intent.putExtra(activity.getResources().getString(R.string.key_playlistID),
+                        currentPlayLists.get(itemPosition));
+                startActivity(intent);
+            }
+        };
+
 
         app = (App)getApplication();
         app.addListener(this);
         if(savedInstanceState != null){ // if screen was rotated
-            clickedPos = savedInstanceState.getInt(click_key);
             edit.setText(savedInstanceState.getString(edit_key));
         } else {
             currentPlayLists = new ArrayList<PlayList>();
         }
-        App.getCloudStorage().downloadUsersPlaylists();
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+        actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                clickedPos = position;
-                edit.setText(currentPlayLists.get(clickedPos).getName());
-            }
-        });
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
+            public void onClick(View view) {
                 if(edit.getText().length() > 0){
                     PlayList playList = new PlayList(edit.getText().toString(),0);
                     App.getCloudStorage().addNewPlaylist(playList);
                     edit.setText("");
-                    clickedPos = -1;
-                }
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if(clickedPos != -1){
-                    App.getCloudStorage().deletePlayList(currentPlayLists.get(clickedPos));
-                    edit.setText("");
-                    clickedPos = -1;
                 }
             }
         });
@@ -91,7 +99,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     public void onPlayListAdded(PlayList playList) {
         if(playList != null){
             currentPlayLists.add(playList);
-            adapter.updateListView(currentPlayLists);
+            recyclerAdapter.updateListView(currentPlayLists);
         }
     }
 
@@ -111,7 +119,7 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
             int index = findPlayListByID(playList.getID());
             if(index != -1){
                 currentPlayLists.remove(index);
-                adapter.updateListView(currentPlayLists);
+                recyclerAdapter.updateListView(currentPlayLists);
             }
         }
     }
@@ -120,8 +128,8 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     public void onUsersPlayListsDownloaded(ArrayList<PlayList> playLists) {
         if(playLists != null){
             currentPlayLists = playLists;
-            adapter = new ProfileActivityAdapter(this,currentPlayLists);
-            list.setAdapter(adapter);
+            recyclerAdapter = new ProfileRecyclerAdapter(this,currentPlayLists,onClickListener);
+            recyclerView.setAdapter(recyclerAdapter);
         }
     }
 
@@ -178,7 +186,6 @@ public class ProfileActivity extends Activity implements NetworkEventListener{
     @Override
     public void onSaveInstanceState (Bundle outState) {
         outState.putString(edit_key, edit.getText().toString());
-        outState.putInt(click_key, clickedPos);
     }
 
     @Override

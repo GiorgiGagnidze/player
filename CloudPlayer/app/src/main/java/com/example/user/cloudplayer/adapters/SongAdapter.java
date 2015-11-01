@@ -7,14 +7,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.user.cloudplayer.R;
-import com.example.user.cloudplayer.model.PlayList;
 import com.example.user.cloudplayer.model.Song;
 
 import java.util.ArrayList;
 
-/**
- * Created by Irakli on 7/6/2015.
- */
+
 public class SongAdapter extends BaseAdapter{
 
     private Activity context;
